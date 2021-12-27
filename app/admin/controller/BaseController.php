@@ -17,7 +17,7 @@ class BaseController extends \app\BaseController
      * @param array $vars
      * @return string
      */
-    public function fetch(string $template = '', array $vars = []){
+    protected function fetch(string $template = '', array $vars = []){
         return View::fetch( $template,$vars);
     }
 
@@ -27,7 +27,7 @@ class BaseController extends \app\BaseController
      * @param null $value
      * @return \think\View
      */
-    public function assign($name,$value = null){
+    protected function assign($name,$value = null){
         return View::assign($name,$value);
     }
 }
