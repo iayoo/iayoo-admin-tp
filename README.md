@@ -1,7 +1,7 @@
 Iayoo Admin For ThinkPHP
 ===============
 
-> 运行环境要求PHP7.1+，兼容PHP8.0。'
+> 运行环境要求PHP7.1+，兼容PHP8.0。
 >
 > 基于 `thinkphp 6.0` 
 
