@@ -52,31 +52,4 @@ class BaseController extends \app\BaseController
         ];
     }
 
-    /**
-     * 格式化返回Json数据
-     * @param string|null $msg
-     * @param int $code
-     * @param array $data
-     * @param array $extend
-     * @param int $httpCode
-     * @return void
-     */
-    public function json (string $msg = null,int $code = 200,array $data = [],$extend = [],int $httpCode = 200)
-    {
-        $result = [
-            'msg' => $msg,
-            'code'  => $code,
-            'time' => time()
-        ];
-        if (!empty($data)) {
-            $result['data'] = $data;
-        }
-        if (!empty($extend)) {
-            foreach ($extend as $k => $v) {
-                $result[$k] = $v;
-            }
-        }
-        $response = Response::create($result, 'json', $httpCode);
-        throw new HttpResponseException($response);
-    }
 }
