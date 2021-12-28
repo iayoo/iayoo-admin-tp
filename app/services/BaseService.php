@@ -8,6 +8,7 @@ namespace app\services;
 
 
 use Iayoo\ServiceHelper\thinkphp\ServiceProvider;
+use think\exception\ValidateException;
 
 class BaseService extends ServiceProvider
 {
@@ -21,5 +22,21 @@ class BaseService extends ServiceProvider
 
     public function get($data){
         return $this->model::where($data)->find();
+    }
+
+    /**
+     * 软删除
+     * @param $ids
+     * @return bool
+     * @throws \Exception
+     */
+    public function goBatchRemove($ids)
+    {
+        if (!is_array($ids)) throw new ValidateException("数据不存在");
+        try{
+            return $this->model::destroy($ids);
+        }catch (\Exception $e){
+            throw new \Exception('操作失败'.$e->getMessage());
+        }
     }
 }
