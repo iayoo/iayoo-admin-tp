@@ -4,8 +4,85 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af4c1d3fa817eb8c58caa9a7ec0362b0",
+    "content-hash": "d09deedae7970cf7b354f2d9cf1f4643",
     "packages": [
+        {
+            "name": "iayoo/api-response",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iayoo/api-response.git",
+                "reference": "dc7424c0081068565571f667a6e603f5a23fff0a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iayoo/api-response/zipball/dc7424c0081068565571f667a6e603f5a23fff0a",
+                "reference": "dc7424c0081068565571f667a6e603f5a23fff0a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Iayoo\\ApiResponse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Iayoo",
+                    "email": "vilnius94@163.com"
+                }
+            ],
+            "description": "laravel api response",
+            "homepage": "https://github.com/iayoo/api-response",
+            "keywords": [
+                "api",
+                "laravel",
+                "response"
+            ],
+            "support": {
+                "issues": "https://github.com/iayoo/api-response/issues",
+                "source": "https://github.com/iayoo/api-response/tree/0.0.1"
+            },
+            "time": "2021-11-18T07:20:45+00:00"
+        },
+        {
+            "name": "iayoo/services-helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iayoo/services-helper.git",
+                "reference": "0c3a0d7238d8c98dbcd36f2287469cae38713789"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iayoo/services-helper/zipball/0c3a0d7238d8c98dbcd36f2287469cae38713789",
+                "reference": "0c3a0d7238d8c98dbcd36f2287469cae38713789",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Iayoo\\ServiceHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Iayoo",
+                    "email": "vilnius94@163.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/iayoo/services-helper/issues",
+                "source": "https://github.com/iayoo/services-helper/tree/master"
+            },
+            "time": "2021-12-28T09:44:21+00:00"
+        },
         {
             "name": "league/flysystem",
             "version": "1.1.9",
@@ -1029,7 +1106,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "iayoo/services-helper": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
