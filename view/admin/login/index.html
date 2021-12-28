@@ -43,6 +43,10 @@
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
+    // 检测如果是iframe跳转登录，则检测上级href是否一致
+    if (parent.location.href !== location.href){
+        parent.location.href = location.href;
+    }
     layui.use(['form', 'layer', 'jquery', 'element','loading'], function () {
         var $ = layui.jquery
             , layer = layui.layer
