@@ -43,28 +43,36 @@
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
-    layui.use(['form', 'layer', 'jquery', 'element'], function () {
+    layui.use(['form', 'layer', 'jquery', 'element','loading'], function () {
         var $ = layui.jquery
             , layer = layui.layer
             , element = layui.element
+            , loading = layui.loading
             , form = layui.form;
         // 登 录 提 交
         form.on('submit(login)', function(data) {
-            layer.load();
+            loading.Load(3);
             $.ajax({
                 type: "POST",
                 data: data.field,
                 success: function (res) {
-                    layer.closeAll('loading');
+                    loading.loadRemove();
                     if (res.code==200){
                         layer.msg(res.msg,{icon:1,time:1000},function () {
                             location.href = '{$Request.root??"/"}';
                         })
                     } else {
-                        layer.msg(res.msg,{icon:2,time:1000},function () {
+                        let msg = res.msg??"网络异常";
+                        layer.msg(msg,{icon:2,time:1000},function () {
                             initCode();
                         })
                     }
+                },
+                error:function (res) {
+                    loading.loadRemove();
+                    layer.msg("网络异常",{icon:2,time:1000},function () {
+                        initCode();
+                    })
                 }
             });
             return false;
