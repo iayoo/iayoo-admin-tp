@@ -57,12 +57,12 @@
                 data: data.field,
                 success: function (res) {
                     loading.loadRemove();
-                    if (res.code==200){
+                    if (res.code===0){
                         layer.msg(res.msg,{icon:1,time:1000},function () {
                             location.href = '{$Request.root??"/"}';
                         })
                     } else {
-                        let msg = res.msg??"网络异常";
+                        let msg = res.message??"网络异常";
                         layer.msg(msg,{icon:2,time:1000},function () {
                             initCode();
                         })
