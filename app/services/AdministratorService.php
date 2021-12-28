@@ -19,9 +19,6 @@ class AdministratorService extends BaseService
     // 用户登录验证
     public function login(array $data)
     {
-//        $validate = new V;
-//        if(!$validate->scene('login')->check($data))
-//            return ['msg'=>$validate->getError(),'code'=>201];
         //验证用户
         $admin = $this->model::where([
             'username' => trim($data['username']),

@@ -26,6 +26,6 @@ class Index extends BaseController
      * 菜单列表
      */
     public function menu(){
-        return $this->json(ToolService::getTree(Session::get('admin.menu')));
+        return $this->success(ToolService::getTree(Session::get('admin.menu')));
     }
 }

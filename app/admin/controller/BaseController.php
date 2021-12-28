@@ -7,12 +7,14 @@
 namespace app\admin\controller;
 
 
+use Iayoo\ApiResponse\Response\ThinkPHP\ResponseTrait;
 use think\exception\HttpResponseException;
 use think\facade\View;
 use think\Response;
 
 class BaseController extends \app\BaseController
 {
+    use ResponseTrait;
     /**
      * 解析和获取模板内容 用于输出
      * @param string $template

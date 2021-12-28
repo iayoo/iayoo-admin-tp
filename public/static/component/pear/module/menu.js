@@ -32,7 +32,7 @@ layui.define(['table', 'jquery', 'element'], function(exports) {
 		if (option.async) {
 			if (option.method === "GET") {
 				getData(option.url).then(function(data) {
-					option.data = data;
+					option.data = data.data;
 					renderMenu(option);
 				});
 			} else {
