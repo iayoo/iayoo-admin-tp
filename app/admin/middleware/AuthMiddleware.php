@@ -24,13 +24,15 @@ class AuthMiddleware
     public function handle($request, Closure $next)
     {
         $loginPath = Route::buildUrl('/admin/login')->suffix(null)->build();
-        if (!$request->session('admin') && $request->url() !== $loginPath){
+        $admin = Session::get('admin');
+        if (!$admin && $request->url() !== $loginPath){
             return redirect($loginPath);
         }
-        $admin = Session::get('admin');
-        /** @var AdministratorService $service */
-        $service = app()->make(AdministratorService::class);
-        $service->setId($admin['id']);
+        if ($request->url() !== $loginPath){
+            /** @var AdministratorService $service */
+            $service = app()->make(AdministratorService::class);
+            $service->setId($admin['id']);
+        }
         return $next($request);
     }
 }
