@@ -16,6 +16,24 @@ class AdministratorService extends BaseService
 {
     protected $model = Administrator::class;
 
+    protected $id;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
     // 用户登录验证
     public function login(array $data)
     {

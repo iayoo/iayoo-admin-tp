@@ -4,8 +4,10 @@
 namespace app\admin\middleware;
 
 
+use app\services\AdministratorService;
 use Closure;
 use think\facade\Route;
+use think\facade\Session;
 use think\Request;
 use think\Response;
 use think\route\Url;
@@ -25,6 +27,10 @@ class AuthMiddleware
         if (!$request->session('admin') && $request->url() !== $loginPath){
             return redirect($loginPath);
         }
+        $admin = Session::get('admin');
+        /** @var AdministratorService $service */
+        $service = app()->make(AdministratorService::class);
+        $service->setId($admin['id']);
         return $next($request);
     }
 }
