@@ -20,38 +20,16 @@
         let treetable = layui.treetable;
         let $ = layui.jquery;
 
-        let MODULE_PATH = "{$Request.root}/administrator.permission/";
+        let MODULE_PATH = "{$datatableUrl}";
+
+        let renderConfig = {:htmlspecialchars_decode($renderConfig)};
 
         window.render = function(){
-            treetable.render({
-                treeColIndex: 0,
-                treeSpid: 0,
-                treeIdName: 'id',
-                treePidName: 'pid',
-                skin:'line',
-                method:'post',
-                treeDefaultClose: false,
-                toolbar:'#power-toolbar',
-                elem: '#power-table',
-                url: MODULE_PATH + 'index',
-                page: false,
-                cols: [
-                    [
-                        {field: 'title', minWidth: 200, unresize: true,title: '权限名称'},
-                        {field: 'icon',title: '图标', unresize: true, align: 'center',
-                            templet:function (d) {
-                                return '<i class="'+d.icon+'"></i>';
-                            }
-                        },
-                        {field: 'type', title: '权限类型',unresize: true,templet:'#power-type'},
-                        {title: '状态', field: 'status',align: 'center',unresize: true,templet: '#status',width: 100},
-                        {field: 'sort', title: '排序',unresize: true},
-                        {title: '操作',templet: '#power-bar', unresize: true,width: 150, align: 'center'}
-                    ]
-                ]
-            });
+            treetable.render(renderConfig);
         }
+
         render();
+
         table.on('tool(power-table)',function(obj){
             if (obj.event === 'remove') {
                 window.remove(obj);
