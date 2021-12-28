@@ -34,13 +34,16 @@ class AdministratorService extends BaseService
         $this->id = $id;
     }
 
+    public function passwordEncode($password){
+        return password_hash($password,PASSWORD_BCRYPT);
+    }
+
     // 用户登录验证
     public function login(array $data)
     {
         //验证用户
         $admin = $this->model::where([
             'username' => trim($data['username']),
-            'password' => ToolService::set_password(trim($data['password'])),
             'status' => 1
         ])->find();
         if(!$admin) throw new \Exception('用户名密码错误');
@@ -150,11 +153,14 @@ class AdministratorService extends BaseService
     }
 
     public function matching($username,$password){
-        return !!($this->get([
+        $adminInfo = $this->get([
             'username' => trim($username),
-            'password' => ToolService::set_password(trim($password)),
             'status'   => 1
-        ]));
+        ]);
+        if (!$adminInfo){
+            return false;
+        }
+        return password_verify($password,$adminInfo['password']);
     }
 
 }
