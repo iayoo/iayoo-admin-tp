@@ -148,4 +148,13 @@ class AdministratorService extends BaseService
             ->paginate($this->limit);
         return ['data'=>$list->items(),'extend'=>['count' => $list->total(), 'limit' => $this->limit]];
     }
+
+    public function matching($username,$password){
+        return !!($this->get([
+            'username' => trim($username),
+            'password' => ToolService::set_password(trim($password)),
+            'status'   => 1
+        ]));
+    }
+
 }
