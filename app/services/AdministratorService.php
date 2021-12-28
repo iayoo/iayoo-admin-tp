@@ -9,6 +9,7 @@ namespace app\services;
 
 use app\model\Administrator;
 use app\Request;
+use think\exception\ValidateException;
 use think\facade\Cookie;
 use think\facade\Session;
 
@@ -161,6 +162,20 @@ class AdministratorService extends BaseService
             return false;
         }
         return password_verify($password,$adminInfo['password']);
+    }
+
+    public function save($data){
+
+        $data['password'] = $this->passwordEncode($data['password']);
+        $data['username'] = trim($data['username']);
+        if ($this->get(['username'=>$data['username']])){
+            throw new ValidateException("账号已存在");
+        }
+        if (isset($data['id']) && !empty($data['id'])){
+            $id = $data['id'];
+            return $this->update(['id'=>$id],$data);
+        }
+        return $this->create($data);
     }
 
 }
