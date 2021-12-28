@@ -132,4 +132,20 @@ class AdministratorService extends BaseService
         //合并权限为用户的最终权限
         return $permissions;
     }
+
+    // 获取列表
+    public function getList($search = null)
+    {
+        $where = [];
+        if ($search) {
+            $where[] = ['username', 'like', "%" . $search . "%"];
+        }
+        $list = $this->model::order('id','desc')
+            ->where('id','<>',$this->getId())
+            ->where('id','>','1')
+            ->withoutField('password,token,delete_time')
+            ->where($where)
+            ->paginate($this->limit);
+        return ['data'=>$list->items(),'extend'=>['count' => $list->total(), 'limit' => $this->limit]];
+    }
 }

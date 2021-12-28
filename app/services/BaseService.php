@@ -11,4 +11,5 @@ use Iayoo\ServiceHelper\thinkphp\ServiceProvider;
 
 class BaseService extends ServiceProvider
 {
+
 }
