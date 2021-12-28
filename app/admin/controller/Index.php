@@ -7,6 +7,7 @@
 namespace app\admin\controller;
 
 
+use app\services\AdministratorService;
 use app\services\ToolService;
 use think\facade\Session;
 
@@ -23,8 +24,9 @@ class Index extends BaseController
 
     /**
      * 菜单列表
+     * @param AdministratorService $service
      */
-    public function menu(){
-        return $this->success(ToolService::getTree(Session::get('admin.menu')));
+    public function menu(AdministratorService $service){
+        return $this->success(ToolService::getTree($service->permissions($service->getId(),request()->root())));
     }
 }
