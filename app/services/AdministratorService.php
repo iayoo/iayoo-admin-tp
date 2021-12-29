@@ -9,6 +9,7 @@ namespace app\services;
 
 use app\model\Administrator;
 use app\Request;
+use think\exception\ValidateException;
 use think\facade\Cookie;
 use think\facade\Session;
 
@@ -34,13 +35,16 @@ class AdministratorService extends BaseService
         $this->id = $id;
     }
 
+    public function passwordEncode($password){
+        return password_hash($password,PASSWORD_BCRYPT);
+    }
+
     // 用户登录验证
     public function login(array $data)
     {
         //验证用户
         $admin = $this->model::where([
             'username' => trim($data['username']),
-            'password' => ToolService::set_password(trim($data['password'])),
             'status' => 1
         ])->find();
         if(!$admin) throw new \Exception('用户名密码错误');
@@ -150,11 +154,28 @@ class AdministratorService extends BaseService
     }
 
     public function matching($username,$password){
-        return !!($this->get([
+        $adminInfo = $this->get([
             'username' => trim($username),
-            'password' => ToolService::set_password(trim($password)),
             'status'   => 1
-        ]));
+        ]);
+        if (!$adminInfo){
+            return false;
+        }
+        return password_verify($password,$adminInfo['password']);
+    }
+
+    public function save($data){
+
+        $data['password'] = $this->passwordEncode($data['password']);
+        $data['username'] = trim($data['username']);
+        if ($this->get(['username'=>$data['username']])){
+            throw new ValidateException("账号已存在");
+        }
+        if (isset($data['id']) && !empty($data['id'])){
+            $id = $data['id'];
+            return $this->update(['id'=>$id],$data);
+        }
+        return $this->create($data);
     }
 
 }
