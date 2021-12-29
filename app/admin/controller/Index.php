@@ -29,4 +29,15 @@ class Index extends BaseController
     public function menu(AdministratorService $service){
         return $this->success(ToolService::getTree($service->permissions($service->getId(),request()->root())));
     }
+
+    public function password(AdministratorService $service)
+    {
+        if ($this->request->isAjax()){
+            if ($service->updatePassword($service->getId(),$this->request->param('password'))){
+                return $this->success("操作成功");
+            }
+            return $this->error("操作失败");
+        }
+        return $this->fetch();
+    }
 }

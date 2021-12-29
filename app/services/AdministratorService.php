@@ -272,4 +272,9 @@ class AdministratorService extends BaseService
         }
         return true;
     }
+
+    public function updatePassword($id,$password)
+    {
+        return $this->save(['id'=>$id,'password'=>$this->passwordEncode($password)]);
+    }
 }
