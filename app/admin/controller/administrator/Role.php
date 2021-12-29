@@ -24,4 +24,20 @@ class Role extends BaseController
         $result = $service->setIsLayui(true)->searchList($this->request->param());
         return $this->setIsLayer(true)->success($result);
     }
+
+    public function add(){
+        return $this->fetch();
+    }
+
+    public function edit($id, AdministratorRoleService $service)
+    {
+        return $this->fetch('add',$service->get($id));
+    }
+
+    public function save(AdministratorRoleService $service){
+        if ($service->save($this->request->param())){
+            return $this->success('操作成功');
+        }
+        return $this->error('操作失败');
+    }
 }

@@ -41,7 +41,8 @@ class BaseService extends ServiceProvider
         if (is_array($data)){
             $where = $data;
         }
-        return $this->model::where($where)->find();
+        $model = $this->model::where($where)->find();
+        return $model?$model->toArray():null;
     }
 
     /**

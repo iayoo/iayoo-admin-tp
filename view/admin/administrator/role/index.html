@@ -133,7 +133,7 @@
                 title: '新增角色',
                 shade: 0.1,
                 area: screen(),
-                content: MODULE_PATH + 'add'
+                content: "{:url('add')}"
             });
         }
 
@@ -144,7 +144,7 @@
                 title: '修改角色',
                 shade: 0.1,
                 area: screen(),
-                content: MODULE_PATH + 'edit/id/'+obj.data['id']
+                content: "{:url('/admin/administrator.role/edit/id',[],false)}/"+obj.data['id']
             });
         }
 
@@ -155,7 +155,7 @@
                 title: '分配权限',
                 shade: 0.1,
                 area: screen(),
-                content: MODULE_PATH + 'permission/id/'+obj.data['id']
+                content: "{:url('/admin/administrator.role/permission/id',[],false)}/"+obj.data['id']
             });
         }
 
@@ -188,21 +188,21 @@
                     success: function(res) {
                         layer.close(loading);
                         //判断有没有权限
-                        if(res && res.code==999){
-                            layer.msg(res.msg, {
+                        if(res && res.code===999){
+                            layer.msg(res.message, {
                                 icon: 5,
                                 time: 2000,
                             })
                             return false;
-                        }else if (res.code==200) {
-                            layer.msg(res.msg, {
+                        }else if (res.code===0) {
+                            layer.msg(res.message, {
                                 icon: 1,
                                 time: 1000
                             }, function() {
                                 obj.del();
                             });
                         } else {
-                            layer.msg(res.msg, {
+                            layer.msg(res.message, {
                                 icon: 2,
                                 time: 1000
                             });
