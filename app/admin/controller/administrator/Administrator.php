@@ -77,4 +77,9 @@ class Administrator extends BaseController
         }
         return $this->error("操作失败");
     }
+
+    public function permission(AdministratorService $service)
+    {
+        return $this->fetch('',$service->getPermission($this->request->param('id')));
+    }
 }

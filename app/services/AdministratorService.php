@@ -9,6 +9,7 @@ namespace app\services;
 
 use app\model\Administrator;
 use app\model\AdministratorAdministratorRole;
+use app\model\AdministratorPermission;
 use app\model\AdministratorRole;
 use app\Request;
 use think\exception\ValidateException;
@@ -230,5 +231,20 @@ class AdministratorService extends BaseService
             }
         }
         return true;
+    }
+
+    public function getPermission($id)
+    {
+        $admin = $this->model::with('directPermissions')->find($id);
+        $permissions = AdministratorPermission::order('sort','asc')->select();
+        foreach ($permissions as $permission){
+            foreach ($admin->direct_permissions as $v){
+                if ($permission->id == $v['id']){
+                    $permission->own = true;
+                }
+            }
+        }
+        $permissions = ToolService::getTree($permissions->toArray());
+        return ['admin'=>$admin,'permissions'=>$permissions];
     }
 }
