@@ -40,4 +40,12 @@ class Index extends BaseController
         }
         return $this->fetch();
     }
+
+    public function cache(ToolService $toolService)
+    {
+        if ($toolService::clearCache()){
+            return $this->success('操作成功');
+        }
+        return $this->error("操作失败");
+    }
 }

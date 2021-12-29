@@ -68,4 +68,30 @@ class ToolService
     public static function is_url($url){
         if(preg_match("/^http(s)?:\\/\\/.+/",$url)) return $url;
     }
+
+    public static function clearCache(){
+        self::delDir(root_path().'runtime');
+        return true;
+    }
+
+    /**
+     * 遍历删除文件夹所有内容
+     * @param  string $dir 要删除的文件夹
+     */
+    public static function delDir($dir)
+    {
+        $dh = opendir($dir);
+        while ($file = readdir($dh)) {
+            if ($file != '.' && $file != '..') {
+                $filepath = $dir . '/' . $file;
+                if (is_dir($filepath)) {
+                    self::delDir($filepath);
+                } else {
+                    @unlink($filepath);
+                }
+            }
+        }
+        closedir($dh);
+        @rmdir($dir);
+    }
 }
