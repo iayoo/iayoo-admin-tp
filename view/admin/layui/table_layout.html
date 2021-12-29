@@ -146,12 +146,12 @@
             var status = data.elem.checked?1:2;
             var id = this.value;
             var load = layer.load();
-            $.post(MODULE_PATH + 'status',{status:status,id:id},function (res) {
+            $.post("{:url('status')}",{status:status,id:id},function (res) {
                 layer.close(load);
-                if (res.code==200){
-                    layer.msg(res.msg,{icon:1,time:1500})
+                if (res.code===0){
+                    layer.msg(res.message,{icon:1,time:1500})
                 } else {
-                    layer.msg(res.msg,{icon:2,time:1500},function () {
+                    layer.msg(res.message,{icon:2,time:1500},function () {
                         $(data.elem).prop('checked',!$(data.elem).prop('checked'));
                         form.render()
                     })

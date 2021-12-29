@@ -80,4 +80,11 @@ class Permission extends \app\admin\controller\BaseController
         $res = $service->remove($this->request->param('id'),$this->request->param('type'));
         return $this->success("删除成功");
     }
+
+    public function status(AdministratorPermissionService $service){
+        if ($service->save($this->request->param())){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
+    }
 }
