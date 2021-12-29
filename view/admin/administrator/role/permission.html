@@ -1,18 +1,16 @@
+{extend name="layout/iframe" /}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
-    <style>
-        /*分配权限*/
-        .box{margin-bottom: 15px;padding-bottom:10px;border-bottom: 1px solid #f0f0f0;}
-        .box dt{margin-bottom: 10px;}
-        .box dd{padding:0 50px}
-        .box dd .cate-second{margin-bottom: 10px}
-        .box dd .cate-third{padding:0 40px;margin-bottom: 10px}
-    </style>
-</head>
+{block name="head"}
+<style>
+    /*分配权限*/
+    .box{margin-bottom: 15px;padding-bottom:10px;border-bottom: 1px solid #f0f0f0;}
+    .box dt{margin-bottom: 10px;}
+    .box dd{padding:0 50px}
+    .box dd .cate-second{margin-bottom: 10px}
+    .box dd .cate-third{padding:0 40px;margin-bottom: 10px}
+</style>
+{/block}
+{block name="body"}
 <body>
 <form class="layui-form" action="">
     <div class="mainBox">
@@ -141,4 +139,4 @@
     })
 </script>
 </body>
-</html>
+{/block}

@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
-    <style>
-        .pear-container{background-color:white;}
-        body{margin: 10px;}
-    </style>
-</head>
+{extend name="layout/iframe" /}
+
+{block name="head"}
+<style>
+    .pear-container{background-color:white;}
+    body{margin: 10px;}
+</style>
+{/block}
+{block name="body"}
 <body>
 <form class="layui-form" action="">
     <div class="layui-form-item">
@@ -146,4 +145,4 @@
     });
 </script>
 </body>
-</html>
+{/block}
