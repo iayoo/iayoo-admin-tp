@@ -65,4 +65,16 @@ class Administrator extends BaseController
         }
         return $this->error("操作失败");
     }
+
+    public function role(AdministratorService $service)
+    {
+        return $this->fetch('',$service->getRole($this->request->param('id')));
+    }
+
+    public function updateRole(AdministratorService $service){
+        if ($service->updateRole($this->request->param('id'),$this->request->param('roles'))){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
+    }
 }

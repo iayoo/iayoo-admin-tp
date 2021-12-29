@@ -8,9 +8,12 @@ namespace app\services;
 
 
 use app\model\Administrator;
+use app\model\AdministratorAdministratorRole;
+use app\model\AdministratorRole;
 use app\Request;
 use think\exception\ValidateException;
 use think\facade\Cookie;
+use think\facade\Db;
 use think\facade\Session;
 
 class AdministratorService extends BaseService
@@ -189,5 +192,43 @@ class AdministratorService extends BaseService
             throw new ValidateException("账号已存在");
         }
         return $this->create($data);
+    }
+
+    public function getRole($id){
+        $admin = $this->model::with('roles')->where('id',$id)->find();
+        $roles = AdministratorRole::select();
+        foreach ($roles as $k=>$role){
+            if (isset($admin->roles) && !$admin->roles->isEmpty()){
+                foreach ($admin->roles as $v){
+                    if ($role['id']==$v['id']){
+                        $roles[$k]['own'] = true;
+                    }
+                }
+            }
+        }
+        return ['admin'=>$admin,'roles'=>$roles];
+    }
+    // 用户分配角色
+    public function updateRole($id,$data)
+    {
+        if($data){
+            Db::startTrans();
+            try{
+                //清除原先的角色
+                AdministratorAdministratorRole::where('admin_id',$id)->delete();
+                //添加新的角色
+                foreach ($data as $v){
+                    AdministratorAdministratorRole::create([
+                        'admin_id' => $id,
+                        'role_id' => $v,
+                    ]);
+                }
+                Db::commit();
+            }catch (\Exception $e){
+                Db::rollback();
+                return false;
+            }
+        }
+        return true;
     }
 }
