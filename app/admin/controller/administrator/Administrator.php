@@ -57,4 +57,12 @@ class Administrator extends BaseController
                 $administratorLogService->setIsLayui(true)->searchList($this->request->param()
                 ));
     }
+
+    public function status(AdministratorService $service)
+    {
+        if ($service->save($this->request->param())){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
+    }
 }

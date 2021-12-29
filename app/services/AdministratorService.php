@@ -174,15 +174,19 @@ class AdministratorService extends BaseService
     }
 
     public function save($data){
+        if (isset($data['password'])){
+            $data['password'] = $this->passwordEncode($data['password']);
+        }
+        if (isset($data['username'])){
+            $data['username'] = trim($data['username']);
 
-        $data['password'] = $this->passwordEncode($data['password']);
-        $data['username'] = trim($data['username']);
-        if ($this->get(['username'=>$data['username']])){
-            throw new ValidateException("账号已存在");
         }
         if (isset($data['id']) && !empty($data['id'])){
             $id = $data['id'];
             return $this->update(['id'=>$id],$data);
+        }
+        if ($this->get(['username'=>$data['username']])){
+            throw new ValidateException("账号已存在");
         }
         return $this->create($data);
     }
