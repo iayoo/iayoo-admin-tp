@@ -80,6 +80,12 @@ class BaseService extends ServiceProvider
 
 
     public function searchList($where){
+        if (isset($where['page'])){
+            unset($where['page']);
+        }
+        if (isset($where['limit'])){
+            unset($where['limit']);
+        }
         $data = $this->model::where($where)->page($this->page,$this->limit)->select();
         $total = $this->model::where($where)->count();
         if ($this->isLayui){

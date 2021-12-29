@@ -8,6 +8,7 @@ namespace app\admin\controller\administrator;
 
 
 use app\admin\controller\BaseController;
+use app\services\AdministratorLogService;
 use app\services\AdministratorService;
 
 class Administrator extends BaseController
@@ -43,5 +44,17 @@ class Administrator extends BaseController
             return $this->success("删除成功");
         }
         return $this->error("删除失败");
+    }
+
+    public function log(){
+        return $this->fetch();
+    }
+
+    public function logList(AdministratorLogService $administratorLogService)
+    {
+        return $this->setIsLayer(true)
+            ->success(
+                $administratorLogService->setIsLayui(true)->searchList($this->request->param()
+                ));
     }
 }
