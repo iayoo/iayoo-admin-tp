@@ -11,4 +11,9 @@ use think\Model;
 class AdministratorPermission extends Model
 {
     //
+    // 子权限
+    public function child()
+    {
+        return $this->hasMany(AdministratorPermission::class,'pid','id');
+    }
 }

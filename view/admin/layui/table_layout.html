@@ -85,7 +85,7 @@
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url:MODULE_PATH + 'remove',
+                    url:"{:url('remove')}",
                     data:{id:obj.data['id']},
                     dataType: 'json',
                     type: 'POST',

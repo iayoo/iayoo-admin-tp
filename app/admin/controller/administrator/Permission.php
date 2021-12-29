@@ -75,15 +75,10 @@ class Permission extends \app\admin\controller\BaseController
             return $this->success("保存成功");
         }
         return $this->error('保存失败');
-//        //验证
-//        $validate = new V;
-//        if(!$validate->check($data))
-//            return ['msg'=>$validate->getError(),'code'=>201];
-//        try {
-//            M::create($data);
-//            rm();Session::clear();
-//        }catch (\Exception $e){
-//            return ['msg'=>'操作失败'.$e->getMessage(),'code'=>201];
-//        }
+    }
+
+    public function remove(AdministratorPermissionService $service){
+        $res = $service->remove($this->request->param('id'),$this->request->param('type'));
+        return $this->success("删除成功");
     }
 }
