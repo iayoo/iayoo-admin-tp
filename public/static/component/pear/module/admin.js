@@ -241,7 +241,6 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 						control = option.menu.control;
 					}
 				}
-				
 				localStorage.setItem("muilt-tab",muiltTab);
 				localStorage.setItem("theme-banner", banner);
 				localStorage.setItem("theme-menu", menu);
