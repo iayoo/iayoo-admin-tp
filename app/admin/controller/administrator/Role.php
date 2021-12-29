@@ -48,6 +48,15 @@ class Role extends BaseController
         return $this->error('操作失败');
     }
 
+    public function savePermission(AdministratorRoleService $service)
+    {
+        if ($service->savePermission($this->request->param('id'),$this->request->param('permissions'))){
+            return $this->success('操作成功');
+        }
+        return $this->error('操作失败');
+
+    }
+
     public function permission(AdministratorRoleService $service){
         return $this->fetch('',$service->getPermission($this->request->param('id')));
     }

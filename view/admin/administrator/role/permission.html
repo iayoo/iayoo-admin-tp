@@ -117,21 +117,22 @@
             $.ajax({
                 data:data.field,
                 type:'post',
+                url:'{:url("savePermission",["id"=>$role["id"]])}',
                 success:function(res){
                     //判断有没有权限
-                    if(res && res.code==999){
-                        layer.msg(res.msg, {
+                    if(res && res.code===999){
+                        layer.msg(res.message, {
                             icon: 5,
                             time: 2000,
                         })
                         return false;
-                    }else if(res.code==200){
-                        layer.msg(res.msg,{icon:1,time:1000},function(){
+                    }else if(res.code===0){
+                        layer.msg(res.message,{icon:1,time:1000},function(){
                             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
                             parent.layui.table.reload("dataTable");
                         });
                     }else{
-                        layer.msg(res.msg,{icon:2,time:1000});
+                        layer.msg(res.message,{icon:2,time:1000});
                     }
                 }
             })
