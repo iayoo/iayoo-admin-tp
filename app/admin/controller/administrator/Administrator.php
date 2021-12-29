@@ -20,15 +20,22 @@ class Administrator extends BaseController
     }
 
     public function add(){
+        $this->assign('admin',[]);
         return $this->fetch();
     }
 
     public function save(AdministratorService $service){
         if ($service->save($this->request->param())){
-            return $this->success("创建成功");
+            return $this->success("保存成功");
         }else{
-            return $this->error("创建失败");
+            return $this->error("保存失败");
         }
+    }
+
+    public function edit($id,AdministratorService $service){
+        $adminInfo = $service->get($id);
+        $this->assign('admin',$adminInfo);
+        return $this->fetch('add');
     }
 
     public function batchRemove(AdministratorService $service){

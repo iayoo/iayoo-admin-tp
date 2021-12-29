@@ -21,7 +21,14 @@ class BaseService extends ServiceProvider
     }
 
     public function get($data){
-        return $this->model::where($data)->find();
+        $where = [];
+        if (is_numeric($data)){
+            $where['id'] = $data;
+        }
+        if (is_array($data)){
+            $where = $data;
+        }
+        return $this->model::where($where)->find();
     }
 
     /**
