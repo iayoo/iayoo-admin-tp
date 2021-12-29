@@ -60,12 +60,18 @@ class Permission extends \app\admin\controller\BaseController
         ]);
     }
 
+    public function edit($id,AdministratorPermissionService $service){
+        $info = $service->get($id);
+        $this->assign('permissions',ToolService::getTree($service->getList()));
+        return $this->fetch('',$info?$info->toArray():[]);
+    }
+
     public function save(AdministratorPermissionService $service)
     {
         $params = $this->request->param();
         $validate = new AdministratorPermission();
         $validate->scene('create')->check($params);
-        if ($service->create($params)){
+        if ($service->save($params)){
             return $this->success("保存成功");
         }
         return $this->error('保存失败');

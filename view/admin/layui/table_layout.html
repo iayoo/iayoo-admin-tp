@@ -72,7 +72,9 @@
                 title: '修改菜单',
                 shade: 0.1,
                 area: screen(),
-                content: MODULE_PATH + 'edit/id/'+obj.data['id']
+                content: "{:url('/admin/administrator.permission/edit/id',[],false)}/" + obj.data['id']
+                //content: MODULE_PATH + 'edit/id/'+obj.data['id']
+
             });
         }
         window.remove = function(obj){

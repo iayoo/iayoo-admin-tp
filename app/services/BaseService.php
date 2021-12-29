@@ -46,4 +46,12 @@ class BaseService extends ServiceProvider
             throw new \Exception('操作失败'.$e->getMessage());
         }
     }
+
+    public function save($data){
+        if (isset($data['id']) && !empty($data['id'])){
+            $id = $data['id'];
+            return $this->update(['id'=>$id],$data);
+        }
+        return $this->create($data);
+    }
 }
