@@ -88,4 +88,12 @@ class Administrator extends BaseController
         }
         return $this->fetch('',$service->getPermission($this->request->param('id')));
     }
+
+    public function remove(AdministratorService $service)
+    {
+        if ($service->remove($this->request->param('id'))){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
+    }
 }
