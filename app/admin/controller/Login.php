@@ -28,4 +28,9 @@ class Login extends BaseController
         }
         return $this->fetch();
     }
+
+    public function logout(AdministratorService $administratorService){
+        $administratorService->logout();
+        return $this->success("退出成功");
+    }
 }

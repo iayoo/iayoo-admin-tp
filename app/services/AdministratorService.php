@@ -66,6 +66,15 @@ class AdministratorService extends BaseService
         return true;
     }
 
+    // 退出登陆
+    public function logout()
+    {
+        Session::delete('admin');
+        Cookie::delete('token');
+        Cookie::delete('sign');
+        return true;
+    }
+
     /**
      * 用户的所有权限
      * @param $id
@@ -177,5 +186,4 @@ class AdministratorService extends BaseService
         }
         return $this->create($data);
     }
-
 }

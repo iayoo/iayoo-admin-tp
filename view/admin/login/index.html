@@ -62,7 +62,7 @@
                 success: function (res) {
                     loading.loadRemove();
                     if (res.code===0){
-                        layer.msg(res.msg,{icon:1,time:1000},function () {
+                        layer.msg(res.message,{icon:1,time:1000},function () {
                             location.href = '{$Request.root??"/"}';
                         })
                     } else {

@@ -181,8 +181,8 @@
                         type:"POST",
                         dataType:"json",
                         success: function(res) {
-                            if (res.code==200) {
-                                layer.msg(res.msg, {
+                            if (res.code===0) {
+                                layer.msg(res.message, {
                                     icon: 1
                                 });
                                 setTimeout(function() {

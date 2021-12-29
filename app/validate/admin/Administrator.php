@@ -30,7 +30,7 @@ class Administrator extends Validate
     protected $message = [
         'username.require'  => '用户名不能为空',
         'password.require'  => '密码不能为空',
-        'password.matching'  => '用户名密码错误',
+        'password.matching' => '用户名密码错误',
     ];
 
     protected $scene = [
