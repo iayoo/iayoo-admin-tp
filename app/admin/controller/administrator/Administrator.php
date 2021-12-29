@@ -80,6 +80,12 @@ class Administrator extends BaseController
 
     public function permission(AdministratorService $service)
     {
+        if ($this->request->isAjax()){
+            if ($service->savePermission($this->request->param('id'),$this->request->param('permissions'))){
+                return $this->success("操作成功");
+            }
+            return $this->error("操作失败");
+        }
         return $this->fetch('',$service->getPermission($this->request->param('id')));
     }
 }

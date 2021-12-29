@@ -8,10 +8,12 @@ namespace app\services;
 
 
 use app\model\Administrator;
+use app\model\AdministratorAdministratorPermission;
 use app\model\AdministratorAdministratorRole;
 use app\model\AdministratorPermission;
 use app\model\AdministratorRole;
 use app\Request;
+use think\db\exception\DbException;
 use think\exception\ValidateException;
 use think\facade\Cookie;
 use think\facade\Db;
@@ -246,5 +248,28 @@ class AdministratorService extends BaseService
         }
         $permissions = ToolService::getTree($permissions->toArray());
         return ['admin'=>$admin,'permissions'=>$permissions];
+    }
+
+    public function savePermission($id,$data)
+    {
+        if($data){
+            Db::startTrans();
+            try{
+                //清除原有的直接权限
+                AdministratorAdministratorPermission::where('admin_id',$id)->delete();
+                //填充新的直接权限
+                foreach ($data as $v){
+                    AdministratorAdministratorPermission::create([
+                        'admin_id' => $id,
+                        'permission_id' => $v,
+                    ]);
+                }
+                Db::commit();
+            }catch (DbException $exception){
+                Db::rollback();
+                return false;
+            }
+        }
+        return true;
     }
 }

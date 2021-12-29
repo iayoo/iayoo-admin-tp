@@ -5,13 +5,17 @@
 <form class="layui-form" action="">
     <div class="mainBox">
         <div class="main-container">
+            <div class="layui-form-item" style="display: none">
+                <label class="layui-form-label">ID</label>
+                <div class="layui-word-aux layui-form-mid"><input  type="number" name="id"></div>
+            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
-                <div class="layui-word-aux layui-form-mid">{$admin->username}</div>
+                <div class="layui-word-aux layui-form-mid">{$admin['username']??""}</div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">昵称</label>
-                <div class="layui-word-aux layui-form-mid">{$admin->nickname}</div>
+                <div class="layui-word-aux layui-form-mid">{$admin["nickname"]??""}</div>
             </div>
             <div class="layui-form-item">
                 <label for="" class="layui-form-label">权限</label>
