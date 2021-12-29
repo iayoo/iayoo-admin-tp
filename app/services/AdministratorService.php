@@ -15,7 +15,7 @@ use think\facade\Session;
 
 class AdministratorService extends BaseService
 {
-    protected $model = Administrator::class;
+    protected string $model = Administrator::class;
 
     protected $id;
 

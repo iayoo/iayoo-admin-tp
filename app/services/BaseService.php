@@ -12,6 +12,19 @@ use think\exception\ValidateException;
 
 class BaseService extends ServiceProvider
 {
+
+    protected $isLayui = false;
+
+    /**
+     * @param bool $isLayui
+     * @return BaseService
+     */
+    public function setIsLayui(bool $isLayui)
+    {
+        $this->isLayui = $isLayui;
+        return $this;
+    }
+
     public function update($where,$data){
         return $this->model::where($where)->update($data);
     }
@@ -53,5 +66,23 @@ class BaseService extends ServiceProvider
             return $this->update(['id'=>$id],$data);
         }
         return $this->create($data);
+    }
+
+    public function getLayuiTableList(){
+
+    }
+
+
+
+    public function searchList($where){
+        $data = $this->model::where($where)->page($this->page,$this->limit)->select();
+        $total = $this->model::where($where)->count();
+        if ($this->isLayui){
+            return [
+                'data'=>$data,
+                'count'=>$total
+            ];
+        }
+        return compact('data','total');
     }
 }

@@ -37,6 +37,7 @@ class AdministratorPermissionService extends BaseService
             }
         }else{
             if (isset($model->child) && !$model->child->isEmpty()){
+//                throw new
                 return ['msg'=>'存在子权限，确认删除后不可恢复','code'=>201];
             }
         }
