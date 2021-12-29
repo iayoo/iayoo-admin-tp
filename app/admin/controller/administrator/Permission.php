@@ -61,9 +61,8 @@ class Permission extends \app\admin\controller\BaseController
     }
 
     public function edit($id,AdministratorPermissionService $service){
-        $info = $service->get($id);
         $this->assign('permissions',ToolService::getTree($service->getList()));
-        return $this->fetch('',$info?$info->toArray():[]);
+        return $this->fetch('',$service->get($id));
     }
 
     public function save(AdministratorPermissionService $service)

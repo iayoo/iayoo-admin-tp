@@ -40,4 +40,11 @@ class Role extends BaseController
         }
         return $this->error('操作失败');
     }
+
+    public function remove(AdministratorRoleService $service){
+        if ($service->remove($this->request->param('id'))){
+            return $this->success("操作成功");
+        }
+        return $this->error('操作失败');
+    }
 }

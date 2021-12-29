@@ -61,6 +61,10 @@ class BaseService extends ServiceProvider
         }
     }
 
+    public function remove($id){
+        return $this->model::destroy($id);
+    }
+
     public function save($data){
         if (isset($data['id']) && !empty($data['id'])){
             $id = $data['id'];
