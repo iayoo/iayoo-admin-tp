@@ -12,13 +12,7 @@ use app\model\AdministratorRolePermission;
 
 class AdministratorRoleService extends BaseService
 {
-    protected string $model = AdministratorRole::class;
-
-    public function searchList($where)
-    {
-        $queryWhere = [];
-        return parent::searchList($queryWhere);
-    }
+    protected $model = AdministratorRole::class;
 
     // 获取用户直接权限
     public function getPermission($id)

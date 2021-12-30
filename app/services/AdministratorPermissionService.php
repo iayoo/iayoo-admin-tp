@@ -14,7 +14,7 @@ use app\model\AdministratorRolePermission;
 
 class AdministratorPermissionService extends BaseService
 {
-    protected string $model = AdministratorPermission::class;
+    protected $model = AdministratorPermission::class;
 
     public function getAll(){
         return $this->model::order('sort','asc')->select()->toArray();

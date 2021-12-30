@@ -21,7 +21,7 @@ use think\facade\Session;
 
 class AdministratorService extends BaseService
 {
-    protected string $model = Administrator::class;
+    protected $model = Administrator::class;
 
     protected $id;
 
@@ -153,7 +153,7 @@ class AdministratorService extends BaseService
     }
 
     // 获取列表
-    public function getList($search = null)
+    public function searchList($search = null)
     {
         $where = [];
         if ($search) {
@@ -181,11 +181,14 @@ class AdministratorService extends BaseService
 
     public function save($data){
         if (isset($data['password'])){
-            $data['password'] = $this->passwordEncode($data['password']);
+            if (empty($data['password'])){
+                unset($data['password']);
+            }else{
+                $data['password'] = $this->passwordEncode($data['password']);
+            }
         }
         if (isset($data['username'])){
             $data['username'] = trim($data['username']);
-
         }
         if (isset($data['id']) && !empty($data['id'])){
             $id = $data['id'];
