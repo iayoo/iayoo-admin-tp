@@ -12,7 +12,7 @@ use app\model\AdministratorRolePermission;
 
 class AdministratorRoleService extends BaseService
 {
-    protected string $model = AdministratorRole::class;
+    protected $model = AdministratorRole::class;
 
     public function searchList($where)
     {
