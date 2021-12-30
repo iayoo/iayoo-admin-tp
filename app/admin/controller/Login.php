@@ -13,13 +13,14 @@ class Login extends BaseController
 
     /**
      * 后台登录
-     * @param AdministratorValidate $validate
-     * @param AdministratorService $administratorService
      * @return string|void
      * @throws \Exception
      */
-    public function index(AdministratorValidate $validate,AdministratorService $administratorService){
+    public function index(){
         if ($this->request->isAjax()){
+//            $this->batchValidate
+            $administratorService = app()->make(AdministratorService::class);
+            $validate = app()->make(AdministratorValidate::class);
             $validate->scene('login')->check($this->request->param());
             if ($administratorService->login($this->request->param())){
                 return $this->success("登录成功");
