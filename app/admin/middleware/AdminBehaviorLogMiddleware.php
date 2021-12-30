@@ -30,11 +30,11 @@ class AdminBehaviorLogMiddleware
         }
 
         $info = [
-            'uid'       => $adminService->getId(),
-            'url'      => $request->url(),
-            'desc'    => json_encode($desc),
-            'ip'       => $request->ip(),
-            'user_agent'=> $request->server('HTTP_USER_AGENT')
+            'uid'        => $adminService->getId(),
+            'url'        => $request->url(),
+            'desc'       => json_encode($desc),
+            'ip'         => $request->ip(),
+            'user_agent' => $request->server('HTTP_USER_AGENT')
         ];
         $service->save($info);
         return $next($request);
