@@ -10,5 +10,5 @@ return [
     // admin 权限校验中间件
     \app\admin\middleware\AuthMiddleware::class,
     // 行为日志中间件
-    \app\admin\middleware\AdminBehaviorLogMiddleware::class
+    \app\admin\middleware\AdminBehaviorLogMiddleware::class,
 ];
