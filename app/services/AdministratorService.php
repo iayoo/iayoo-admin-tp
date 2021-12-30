@@ -181,11 +181,14 @@ class AdministratorService extends BaseService
 
     public function save($data){
         if (isset($data['password'])){
-            $data['password'] = $this->passwordEncode($data['password']);
+            if (empty($data['password'])){
+                unset($data['password']);
+            }else{
+                $data['password'] = $this->passwordEncode($data['password']);
+            }
         }
         if (isset($data['username'])){
             $data['username'] = trim($data['username']);
-
         }
         if (isset($data['id']) && !empty($data['id'])){
             $id = $data['id'];

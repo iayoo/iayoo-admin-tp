@@ -13,9 +13,11 @@ use app\validate\admin\AdministratorPermission;
 
 class Permission extends \app\admin\controller\BaseController
 {
-    public function index(AdministratorPermissionService $service){
+    /** @var AdministratorPermissionService  */
+    protected $service = AdministratorPermissionService::class;
+    public function index(){
         if ($this->request->isAjax()){
-            $list = $service->getList();
+            $list = $this->service->getList();
             return $this->setIsLayer(true)->success(['code'=>0,'data'=>$list->toArray(),'extend'=>['count' => $list->count()]]);
         }
 
@@ -53,16 +55,16 @@ class Permission extends \app\admin\controller\BaseController
         return $this->success();
     }
 
-    public function add(AdministratorPermissionService $service)
+    public function add()
     {
         return $this->fetch('',[
-            'permissions' => ToolService::getTree($service->getList())
+            'permissions' => ToolService::getTree($this->service->getList())
         ]);
     }
 
-    public function edit($id,AdministratorPermissionService $service){
-        $this->assign('permissions',ToolService::getTree($service->getList()));
-        return $this->fetch('',$service->get($id));
+    public function edit($id){
+        $this->assign('permissions',ToolService::getTree($this->service->getList()));
+        return $this->fetch('',$this->service->get($id));
     }
 
     public function save(AdministratorPermissionService $service)
@@ -74,17 +76,5 @@ class Permission extends \app\admin\controller\BaseController
             return $this->success("保存成功");
         }
         return $this->error('保存失败');
-    }
-
-    public function remove(AdministratorPermissionService $service){
-        $res = $service->remove($this->request->param('id'),$this->request->param('type'));
-        return $this->success("删除成功");
-    }
-
-    public function status(AdministratorPermissionService $service){
-        if ($service->save($this->request->param())){
-            return $this->success("操作成功");
-        }
-        return $this->error("操作失败");
     }
 }

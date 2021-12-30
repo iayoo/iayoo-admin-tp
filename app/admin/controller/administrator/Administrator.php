@@ -13,38 +13,10 @@ use app\services\AdministratorService;
 
 class Administrator extends BaseController
 {
-    public function index(AdministratorService $service){
-        if ($this->request->isAjax()){
-            return $this->setIsLayer(true)->success($service->getList());
-        }
-        return $this->fetch();
-    }
-
-    public function add(){
-        $this->assign('admin',[]);
-        return $this->fetch();
-    }
-
-    public function save(AdministratorService $service){
-        if ($service->save($this->request->param())){
-            return $this->success("保存成功");
-        }else{
-            return $this->error("保存失败");
-        }
-    }
-
-    public function edit($id,AdministratorService $service){
-        $adminInfo = $service->get($id);
-        $this->assign('admin',$adminInfo);
-        return $this->fetch('add');
-    }
-
-    public function batchRemove(AdministratorService $service){
-        if ($service->goBatchRemove($this->request->param('ids'))){
-            return $this->success("删除成功");
-        }
-        return $this->error("删除失败");
-    }
+    /**
+     * @var AdministratorService
+     */
+    protected $service = AdministratorService::class;
 
     public function log(){
         return $this->fetch();
@@ -56,14 +28,6 @@ class Administrator extends BaseController
             ->success(
                 $administratorLogService->setIsLayui(true)->searchList($this->request->param()
                 ));
-    }
-
-    public function status(AdministratorService $service)
-    {
-        if ($service->save($this->request->param())){
-            return $this->success("操作成功");
-        }
-        return $this->error("操作失败");
     }
 
     public function role(AdministratorService $service)
@@ -88,14 +52,5 @@ class Administrator extends BaseController
         }
         return $this->fetch('',$service->getPermission($this->request->param('id')));
     }
-
-    public function remove(AdministratorService $service)
-    {
-        if ($service->remove($this->request->param('id'))){
-            return $this->success("操作成功");
-        }
-        return $this->error("操作失败");
-    }
-
 
 }

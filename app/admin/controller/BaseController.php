@@ -7,7 +7,9 @@
 namespace app\admin\controller;
 
 
+use app\services\AdministratorService;
 use Iayoo\ApiResponse\Response\ThinkPHP\ResponseTrait;
+use think\App;
 use think\exception\HttpResponseException;
 use think\facade\View;
 use think\Response;
@@ -15,6 +17,17 @@ use think\Response;
 class BaseController extends \app\BaseController
 {
     use ResponseTrait;
+
+    protected $service;
+
+    public function __construct(App $app)
+    {
+        parent::__construct($app);
+        if ($this->service){
+            $this->service = app()->make($this->service);
+        }
+    }
+
     /**
      * 解析和获取模板内容 用于输出
      * @param string $template
@@ -50,6 +63,59 @@ class BaseController extends \app\BaseController
             'max' => ini_get('max_execution_time').'秒',
             'ver' => 'V5.0.1',
         ];
+    }
+
+    public function index(){
+        if ($this->request->isAjax()){
+            return $this->setIsLayer(true)->success($this->service->getList());
+        }
+        return $this->fetch();
+    }
+
+    public function add(){
+        if ($this->request->isPost()){
+            if ($this->service->save($this->request->param())){
+                return $this->success("保存成功");
+            }else{
+                return $this->error("保存失败");
+            }
+        }
+        return $this->fetch();
+    }
+
+    public function edit($id){
+        if ($this->request->isPost()){
+            if ($this->service->save($this->request->param())){
+                return $this->success("保存成功");
+            }else{
+                return $this->error("保存失败");
+            }
+        }
+        $this->assign($this->service->get($id));
+        return $this->fetch('add');
+    }
+
+    public function batchRemove(){
+        if ($this->service->goBatchRemove($this->request->param('ids'))){
+            return $this->success("删除成功");
+        }
+        return $this->error("删除失败");
+    }
+
+    public function remove()
+    {
+        if ($this->service->remove($this->request->param('id'))){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
+    }
+
+    public function status()
+    {
+        if ($this->service->save($this->request->param())){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
     }
 
 }
