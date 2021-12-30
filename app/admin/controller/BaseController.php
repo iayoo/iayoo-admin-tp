@@ -67,7 +67,7 @@ class BaseController extends \app\BaseController
 
     public function index(){
         if ($this->request->isAjax()){
-            return $this->setIsLayer(true)->success($this->service->getList());
+            return $this->setIsLayer(true)->success($this->service->searchList());
         }
         return $this->fetch();
     }

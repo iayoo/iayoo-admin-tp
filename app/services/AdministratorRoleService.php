@@ -14,12 +14,6 @@ class AdministratorRoleService extends BaseService
 {
     protected $model = AdministratorRole::class;
 
-    public function searchList($where)
-    {
-        $queryWhere = [];
-        return parent::searchList($queryWhere);
-    }
-
     // 获取用户直接权限
     public function getPermission($id)
     {

@@ -153,7 +153,7 @@ class AdministratorService extends BaseService
     }
 
     // 获取列表
-    public function getList($search = null)
+    public function searchList($search = null)
     {
         $where = [];
         if ($search) {

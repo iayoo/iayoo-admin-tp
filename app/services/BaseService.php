@@ -79,7 +79,7 @@ class BaseService extends ServiceProvider
 
 
 
-    public function searchList($where){
+    public function searchList($where = null){
         if (isset($where['page'])){
             unset($where['page']);
         }
