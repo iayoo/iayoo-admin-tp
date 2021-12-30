@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abd23be438990a57d82cd8b4252afa65",
+    "content-hash": "e361e268152a291d3634e8115ca516e3",
     "packages": [
         {
             "name": "iayoo/api-response",
@@ -23,7 +23,6 @@
             "require": {
                 "php": "^7.2"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -44,10 +43,6 @@
                 "laravel",
                 "response"
             ],
-            "support": {
-                "issues": "https://github.com/iayoo/api-response/issues",
-                "source": "https://github.com/iayoo/api-response/tree/master"
-            },
             "time": "2021-12-28T09:44:47+00:00"
         },
         {
@@ -64,7 +59,6 @@
                 "reference": "0c3a0d7238d8c98dbcd36f2287469cae38713789",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -78,10 +72,6 @@
                     "email": "vilnius94@163.com"
                 }
             ],
-            "support": {
-                "issues": "https://github.com/iayoo/services-helper/issues",
-                "source": "https://github.com/iayoo/services-helper/tree/master"
-            },
             "time": "2021-12-28T09:44:21+00:00"
         },
         {
@@ -557,6 +547,56 @@
             ],
             "description": "The ThinkPHP6 Helper Package",
             "time": "2021-06-21T06:17:31+00:00"
+        },
+        {
+            "name": "topthink/think-migration",
+            "version": "v3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-migration.git",
+                "reference": "5717d9e5f3ea745f6dbfd1e30b4402aaadff9a79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-migration/zipball/5717d9e5f3ea745f6dbfd1e30b4402aaadff9a79",
+                "reference": "5717d9e5f3ea745f6dbfd1e30b4402aaadff9a79",
+                "shasum": ""
+            },
+            "require": {
+                "topthink/framework": "^6.0.0",
+                "topthink/think-helper": "^3.0.3"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.8"
+            },
+            "suggest": {
+                "fzaninotto/faker": "Required to use the factory builder (^1.8)."
+            },
+            "type": "library",
+            "extra": {
+                "think": {
+                    "services": [
+                        "think\\migration\\Service"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phinx\\": "phinx/src/Phinx",
+                    "think\\migration\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "yunwuxin",
+                    "email": "448901948@qq.com"
+                }
+            ],
+            "time": "2020-12-07T05:54:22+00:00"
         },
         {
             "name": "topthink/think-multi-app",
@@ -1117,5 +1157,5 @@
         "php": ">=7.1.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "1.1.0"
 }
