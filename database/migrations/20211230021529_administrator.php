@@ -38,7 +38,7 @@ class Administrator extends Migrator
                   ->addColumn('create_time','timestamp',['comment'=>'创建时间'])
                   ->addColumn('update_time','timestamp',['comment'=>'更新时间'])
                   ->addColumn('delete_time','timestamp',['comment'=>'删除时间'])
-                  ->save();
+                  ->create();
         }
     }
 }
