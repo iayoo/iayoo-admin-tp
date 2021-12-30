@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\validate\admin;
+namespace app\admin\validate;
 
 use think\Validate;
 
@@ -29,6 +29,6 @@ class AdministratorPermission extends Validate
     protected $message = [];
 
     protected $scene = [
-        'create'=>['title|名称','type|类型','sort|排序']
+        'add'=>['title|名称','type|类型','sort|排序']
     ];
 }

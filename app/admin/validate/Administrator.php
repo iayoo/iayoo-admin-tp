@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\validate\admin;
+namespace app\admin\validate;
 
 use app\services\AdministratorService;
 use think\Validate;
