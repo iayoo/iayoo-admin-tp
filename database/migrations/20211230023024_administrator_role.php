@@ -32,9 +32,9 @@ class AdministratorRole extends Migrator
         if (!$table->exists()){
             $table->addColumn('name','string',['limit'=>30,'comment'=>'名称','default'=>''])
                 ->addColumn('desc','string',['limit'=>100,'comment'=>'描述','default'=>''])
-                ->addColumn('create_time','timestamp',['comment'=>'创建时间'])
-                ->addColumn('update_time','timestamp',['comment'=>'更新时间'])
-                ->addColumn('delete_time','timestamp',['comment'=>'删除时间'])
+                ->addColumn('create_time','timestamp',['comment'=>'创建时间','null'=>true])
+                ->addColumn('update_time','timestamp',['comment'=>'更新时间','null'=>true])
+                ->addColumn('delete_time','timestamp',['comment'=>'删除时间','null'=>true])
                 ->create();
         }
     }

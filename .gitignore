@@ -2,7 +2,7 @@
 /.vscode
 /vendor
 *.log
-.env
+.env111
 .DS_Store
 composer.lock
 runtime/*

@@ -35,7 +35,7 @@ class AdministratorLog extends Migrator
                 ->addColumn('desc','text',['comment'=>'日志内容'])
                 ->addColumn('ip','string',['limit'=>20,'comment'=>'操作IP','default'=>''])
                 ->addColumn('user_agent','text',['comment'=>'User-Agent'])
-                ->addColumn('create_time','timestamp',['comment'=>'创建时间'])
+                ->addColumn('create_time','timestamp',['comment'=>'创建时间','null'=>true])
                 ->create();
         }
     }

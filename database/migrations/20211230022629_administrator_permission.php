@@ -37,7 +37,7 @@ class AdministratorPermission extends Migrator
                 ->addColumn('sort','integer',['limit'=>4,'comment'=>'排序','default'=>99])
                 ->addColumn('type','integer',['limit'=>1,'comment'=>'菜单','default'=>1])
                 ->addColumn('status','integer',['limit'=>1,'comment'=>'状态','default'=>1])
-                ->addColumn('create_time','timestamp',['comment'=>'创建时间'])
+                ->addColumn('create_time','timestamp',['comment'=>'创建时间','null'=>true])
                 ->addIndex('pid')
                 ->create();
         }

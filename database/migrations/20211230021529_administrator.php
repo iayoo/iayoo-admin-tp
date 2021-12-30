@@ -35,9 +35,9 @@ class Administrator extends Migrator
                   ->addColumn('nickname','string',['limit'=>30,'comment'=>'用户昵称'])
                   ->addColumn('status','integer',['limit'=>1,'comment'=>'用户状态：1正常,2禁用 默认1','default'=>1])
                   ->addColumn('token','string',['limit'=>60,'comment'=>'token'])
-                  ->addColumn('create_time','timestamp',['comment'=>'创建时间'])
-                  ->addColumn('update_time','timestamp',['comment'=>'更新时间'])
-                  ->addColumn('delete_time','timestamp',['comment'=>'删除时间'])
+                  ->addColumn('create_time','timestamp',['comment'=>'创建时间','null'=>true])
+                  ->addColumn('update_time','timestamp',['comment'=>'更新时间','null'=>true])
+                  ->addColumn('delete_time','timestamp',['comment'=>'删除时间','null'=>true])
                   ->create();
         }
     }
