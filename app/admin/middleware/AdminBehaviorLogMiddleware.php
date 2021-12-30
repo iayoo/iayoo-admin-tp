@@ -30,7 +30,7 @@ class AdminBehaviorLogMiddleware
         }
 
         $info = [
-            'uid'        => $adminService->getId(),
+            'uid'        => $adminService->getId()??0,
             'url'        => $request->url(),
             'desc'       => json_encode($desc),
             'ip'         => $request->ip(),

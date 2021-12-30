@@ -8,6 +8,6 @@ use app\model\AdministratorLog;
 
 class AdministratorLogService extends BaseService
 {
-    protected string $model = AdministratorLog::class;
+    protected $model = AdministratorLog::class;
 
 }
