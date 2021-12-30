@@ -57,21 +57,22 @@ class Permission extends \app\admin\controller\BaseController
 
     public function add()
     {
-        return $this->fetch('',[
-            'permissions' => ToolService::getTree($this->service->getList())
-        ]);
+        $this->assign(
+            'permissions', ToolService::getTree($this->service->getList())
+        );
+        return parent::add();
     }
 
     public function edit($id){
         $this->assign('permissions',ToolService::getTree($this->service->getList()));
-        return $this->fetch('',$this->service->get($id));
+        return parent::edit($id);
     }
 
     public function save(AdministratorPermissionService $service)
     {
         $params = $this->request->param();
-        $validate = new AdministratorPermission();
-        $validate->scene('create')->check($params);
+//        $validate = new AdministratorPermission();
+//        $validate->scene('create')->check($params);
         if ($service->save($params)){
             return $this->success("保存成功");
         }
