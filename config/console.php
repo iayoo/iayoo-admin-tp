@@ -5,6 +5,8 @@
 return [
     // 指令定义
     'commands' => [
+        // test
+        'test'   => \app\command\Test::class,
         // 系统安装指令
         'install'   => \app\command\Install::class,
     ],
