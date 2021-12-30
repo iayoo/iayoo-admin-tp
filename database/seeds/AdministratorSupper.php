@@ -20,6 +20,7 @@ class AdministratorSupper extends Seeder
             'nickname'  => 'admin',
             'password'  => $service->passwordEncode('test12345678'),
             'status'    => 1,
+            'token'     => '',
             'create_time'=>date('Y-m-d H:i:s'),
             'delete_time'=> null,
         ])->save();

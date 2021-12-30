@@ -30,15 +30,12 @@ class ParamsValidateMiddleware
             if ($v->hasScene($scene)) {
                 //仅当存在验证场景才校验
                 $result = $v->scene($scene)->check($params);
-                dump($params);
-                dump($result);
                 if (true !== $result) {
                     //校验不通过则抛出异常，留后面自定义异常获取
                     throw new ValidateException($result);
                 }
             }
         }
-        die;
         return $next($request);
     }
 }
