@@ -33,6 +33,7 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
                     });
                     return;
                 }
+                // code 为 0 时请求正常
                 if (undefined!==res.code && res.code === 0 && undefined !== options.success){
                     options.success(res);
                 }else{
