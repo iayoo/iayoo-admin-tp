@@ -15,6 +15,10 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
             url:options.url,
             type:"POST",
             dataType:"json",
+            contentType: 'application/json',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
             success: function(res) {
                 loading.loadRemove();
                 // 判断code是否为未登录code
