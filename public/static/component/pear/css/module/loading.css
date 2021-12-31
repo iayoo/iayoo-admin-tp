@@ -799,7 +799,7 @@ bottom:0;
 margin:auto;
 text-align: center;
 box-sizing:border-box;
-background: white!important;
+background: #ffffff26!important;
 font-family: "Quicksand", sans-serif;}
 
 [id^=NotiflixLoadingWrap] * {
@@ -814,7 +814,7 @@ cursor:pointer;}
 width:60px;
 height:60px;
 position:fixed;
-background-color: white!important;
+/*background-color: white!important;*/
 transition:top .2s ease-in-out;
 left: 0;
 top: 0;
@@ -828,9 +828,16 @@ max-width:unset;
 max-height:unset;
 width: 100%;
 height: 100%;
-position:absolute;
-left: 0;
-top: 0;}
+/*position:absolute;*/
+/*left: 0;*/
+/*top: 0;*/
+}
+
+[id^=NotiflixLoadingWrap] > div[class*="-icon"] svg{
+    width: 55px;
+    height: 55px;
+    stroke: #000;
+}
 
 [id^=NotiflixLoadingWrap] > div[class*="-icon"].with-message {
 top:-42px;}

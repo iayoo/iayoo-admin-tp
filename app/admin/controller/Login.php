@@ -4,13 +4,13 @@
 namespace app\admin\controller;
 
 
+use app\admin\middleware\ParamsValidateMiddleware;
 use app\services\AdministratorService;
 use app\validate\admin\Administrator as AdministratorValidate;
 use think\Request;
 
 class Login extends BaseController
 {
-
     /**
      * 后台登录
      * @return string|void

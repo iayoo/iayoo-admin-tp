@@ -42,11 +42,37 @@
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
-    layui.use(['table', 'form', 'jquery','common'], function() {
+
+    // //全局的ajax访问，处理ajax清求时异常
+    // $.ajaxSetup({
+    //     contentType:"application/x-www-form-urlencoded;charset=utf-8",
+    //     complete:function(XMLHttpRequest,textStatus){
+    //         //通过XMLHttpRequest取得响应结果
+    //         var res = XMLHttpRequest.responseText;
+    //         try{
+    //             var jsonData = JSON.parse(res);
+    //             if(jsonData.state == -1){
+    //                 //如果超时就处理 ，指定要跳转的页面(比如登陆页)
+    //                 alert(jsonData.msg);
+    //                 window.location.replace("/login/index.php");
+    //             }else if(jsonData.state == 0){
+    //                 //其他的异常情况,给个提示。
+    //                 alert(jsonData.msg);
+    //             }else{
+    //                 //正常情况就不统一处理了
+    //             }
+    //         }catch(e){
+    //         }
+    //     }
+    // });
+
+    layui.use(['table', 'form', 'jquery','common','loading','request'], function() {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
         let common = layui.common;
+        let loading = layui.loading;
+        let request = layui.request;
 
         let MODULE_PATH = "{$Request.root}/admin.admin/";
 
@@ -131,34 +157,12 @@
                 title: '提示'
             }, function(index) {
                 layer.close(index);
-                let loading = layer.load();
-                $.ajax({
+                request.post({
                     url:MODULE_PATH + 'removeLog',
-                    dataType: 'json',
-                    type: 'POST',
                     success: function(res) {
-                        layer.close(loading);
-                        //判断有没有权限
-                        if(res && res.code==999){
-                            layer.msg(res.msg, {
-                                icon: 5,
-                                time: 2000,
-                            })
-                            return false;
-                        }else if (res.code==200) {
-                            layer.msg(res.msg, {
-                                icon: 1,
-                                time: 1000
-                            }, function() {
-                                table.reload('dataTable');
-                            });
-                        } else {
-                            layer.msg(res.msg, {
-                                icon: 2,
-                                time: 1000
-                            });
-                        }
-                    }
+                        table.reload('dataTable');
+                    },
+                    error:function (res) {}
                 })
             });
         }
