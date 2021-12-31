@@ -10,7 +10,6 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
         loading.Load(1)
         if (undefined === options.type){
             options.type = "POST";
-            console.log(options)
         }
         $.ajax({
             url:options.url,
@@ -18,6 +17,18 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
             dataType:"json",
             success: function(res) {
                 loading.loadRemove();
+                // 判断code是否为未登录code
+                // 判断当前是否为iframe子页面
+                // 触发上级页面跳转登录页面
+                if (undefined !==res.code && res.code === 40100 && parent.location.href !== location.href){
+                    layer.msg("登录已过期，正在跳转至登录页", {
+                        icon: 2,
+                        time: 1000
+                    },function () {
+                        parent.location.href = location.href;
+                    });
+                    return;
+                }
                 if (undefined!==res.code && res.code === 0 && undefined !== options.success){
                     options.success(res);
                 }else{
