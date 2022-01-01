@@ -197,6 +197,7 @@ class AdministratorService extends BaseService
         if ($this->get(['username'=>$data['username']])){
             throw new ValidateException("账号已存在");
         }
+        $data['token'] = '';
         return $this->create($data);
     }
 
