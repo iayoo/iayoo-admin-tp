@@ -11,11 +11,17 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
         if (undefined === options.type){
             options.type = "POST";
         }
+        let params = {};
+        // 处理请求参数
+        if (undefined !== options.data && 'object' === (typeof options.data)){
+            params = JSON.stringify(options.data)
+        }
         $.ajax({
             url:options.url,
             type:"POST",
             dataType:"json",
-            data:options.data,
+            data:params,
+            contentType:'application/json',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
