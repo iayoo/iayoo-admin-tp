@@ -95,7 +95,7 @@
             });
         }
         form.on('switch(status)', function(data) {
-            let status = data.elem.checked?1:2;
+            let status = data.elem.checked?1:0;
             let id = this.value;
             request.post({
                 url:"{:url('status')}",
