@@ -97,39 +97,21 @@
     if (parent.location.href !== location.href) {
         parent.location.href = location.href;
     }
-    layui.use(['form', 'layer', 'jquery', 'element', 'loading'], function () {
+    layui.use(['form', 'layer', 'jquery', 'request'], function () {
         var $ = layui.jquery
-            , layer = layui.layer
-            , element = layui.element
-            , loading = layui.loading
+            , request = layui.request
             , form = layui.form;
         // 登 录 提 交
         form.on('submit(login)', function (data) {
-            loading.Load(3);
-            $.ajax({
-                type: "POST",
-                data: data.field,
-                success: function (res) {
-                    loading.loadRemove();
-                    if (res.code === 0) {
-                        layer.msg(res.message, {icon: 1, time: 1000}, function () {
-                            location.href = '{$Request.root??"/"}';
-                        })
-                    } else {
-                        let msg = res.message ?? "网络异常";
-                        layer.msg(msg, {icon: 2, time: 1000}, function () {
-                            initCode();
-                        })
-                    }
-                },
-                error: function (res) {
-                    loading.loadRemove();
-                    layer.msg("网络异常", {icon: 2, time: 1000}, function () {
+            request.post({
+                    data: data.field,
+                    success: function (res) {
+                        location.href = '{$Request.root??"/"}';
+                    },
+                    error: function (res) {
                         initCode();
-                    })
-                }
-            });
-            return false;
+                    }
+                })
         });
         initCode();
 
