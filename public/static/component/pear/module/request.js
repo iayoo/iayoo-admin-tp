@@ -33,9 +33,18 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
                     });
                     return;
                 }
+                console.log(res);
                 // code 为 0 时请求正常
-                if (undefined!==res.code && res.code === 0 && undefined !== options.success){
-                    options.success(res);
+                if (undefined!==res.code && res.code === 0){
+                    if (undefined !== res.message){
+                        layer.msg(res.message, {
+                            icon: 1,
+                            time: 1000
+                        });
+                    }
+                    if (undefined !== options.success){
+                        options.success(res);
+                    }
                 }else{
                     if (undefined !== options.error){
                         options.error(res);
