@@ -28,11 +28,11 @@
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
-    layui.use(['table', 'form', 'jquery','common'], function() {
+    layui.use(['table', 'form', 'jquery','request'], function() {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
-        let common = layui.common;
+        let request = layui.request;
 
         let MODULE_PATH = "{:url()}";
 
@@ -176,36 +176,14 @@
                 title: '提示'
             }, function(index) {
                 layer.close(index);
-                let loading = layer.load();
-                $.ajax({
+                request.post({
                     url:'{:url("remove")}',
-                    data:{id:obj.data['id']},
-                    dataType: 'json',
-                    type: 'POST',
-                    success: function(res) {
-                        layer.close(loading);
-                        //判断有没有权限
-                        if(res && res.code===999){
-                            layer.msg(res.message, {
-                                icon: 5,
-                                time: 2000,
-                            })
-                            return false;
-                        }else if (res.code===0) {
-                            layer.msg(res.message, {
-                                icon: 1,
-                                time: 1000
-                            }, function() {
-                                obj.del();
-                            });
-                        } else {
-                            layer.msg(res.message, {
-                                icon: 2,
-                                time: 1000
-                            });
-                        }
-                    }
-                })
+                    data: {id:obj.data['id']},
+                    success: function (res) {
+                        obj.del();
+                    },
+                    error: function (res) {}
+                });
             });
         }
 

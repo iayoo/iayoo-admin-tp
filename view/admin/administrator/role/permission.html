@@ -68,9 +68,10 @@
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
-    layui.use(['form','jquery'],function(){
+    layui.use(['form','jquery','request'],function(){
         let layform = layui.form;
         let $ = layui.jquery;
+        let request = layui.request;
         layform.on('checkbox', function (data) {
             var check = data.elem.checked;//是否选中
             var checkId = data.elem.id;//当前操作的选项框
@@ -112,28 +113,14 @@
         });
 
         layform.on('submit(save)', function(data){
-            $.ajax({
-                data:data.field,
-                type:'post',
-                url:'{:url("savePermission",["id"=>$role["id"]])}',
-                success:function(res){
-                    //判断有没有权限
-                    if(res && res.code===999){
-                        layer.msg(res.message, {
-                            icon: 5,
-                            time: 2000,
-                        })
-                        return false;
-                    }else if(res.code===0){
-                        layer.msg(res.message,{icon:1,time:1000},function(){
-                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                            parent.layui.table.reload("dataTable");
-                        });
-                    }else{
-                        layer.msg(res.message,{icon:2,time:1000});
-                    }
-                }
-            })
+            request.post({
+                data: data.field,
+                success: function (res) {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    parent.layui.table.reload("dataTable");
+                },
+                error: function (res) {}
+            });
             return false;
         });
     })

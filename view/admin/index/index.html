@@ -95,11 +95,12 @@
 <script src="/static/component/pear/pear.js"></script>
 <!-- 框 架 初 始 化 -->
 <script>
-    layui.use(['admin', 'jquery', 'layer','element'], function() {
+    layui.use(['admin', 'jquery', 'layer','element','request'], function() {
         var $ = layui.jquery;
         var layer = layui.layer;
         var layelem = layui.element;
         var admin = layui.admin;
+        let request = layui.request;
         // 框 架 初 始 化
         admin.render({
             "logo": {
@@ -182,20 +183,15 @@
             if ($(elem).hasClass('logout')) {
                 layer.confirm('确定退出登录吗?', function(index) {
                     layer.close(index);
-                    $.ajax({
+                    request.post({
                         url: '{$Request.root}/login/logout',
-                        type:"POST",
-                        dataType:"json",
-                        success: function(res) {
-                            if (res.code===0) {
-                                layer.msg(res.message, {
-                                    icon: 1
-                                });
-                                setTimeout(function() {
-                                    location.href = '{$Request.root}/login/index';
-                                }, 333)
-                            }
-                        }
+                        data: data.field,
+                        success: function (res) {
+                            setTimeout(function() {
+                                location.href = '{$Request.root}/login/index';
+                            }, 333)
+                        },
+                        error: function (res) {}
                     });
                 });
             }else if ($(elem).hasClass('password')) {
