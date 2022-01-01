@@ -39,9 +39,15 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
                     });
                     return;
                 }
-                console.log(res);
                 // code 为 0 时请求正常
                 if (undefined!==res.code && res.code === 0){
+                    if (undefined !== options.isClose && options.isClose){
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    }
+                    if (undefined !== options.reloadTable && options.reloadTable){
+                        // 刷新上级table
+                        parent.layui.table.reload(options.reloadTable);
+                    }
                     if (undefined !== res.message){
                         layer.msg(res.message, {
                             icon: 1,
