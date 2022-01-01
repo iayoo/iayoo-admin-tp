@@ -48,6 +48,10 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
                         // 刷新上级table
                         parent.layui.table.reload(options.reloadTable);
                     }
+                    if (undefined !== options.reloadPage && options.reloadPage){
+                        // 刷新上级页面
+                        top.location.reload();
+                    }
                     if (undefined !== res.message){
                         layer.msg(res.message, {
                             icon: 1,
