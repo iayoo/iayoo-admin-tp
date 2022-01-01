@@ -40,10 +40,11 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
                         layer.msg(res.message, {
                             icon: 1,
                             time: 1000
+                        },function () {
+                            if (undefined !== options.success){
+                                options.success(res);
+                            }
                         });
-                    }
-                    if (undefined !== options.success){
-                        options.success(res);
                     }
                 }else{
                     if (undefined !== options.error){
