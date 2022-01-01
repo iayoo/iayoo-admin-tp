@@ -15,7 +15,7 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
             url:options.url,
             type:"POST",
             dataType:"json",
-            contentType: 'application/json',
+            data:options.data,
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
