@@ -47,9 +47,15 @@ layui.define(['jquery', 'layer','loading'], function (exports) {
                         });
                     }
                 }else{
-                    if (undefined !== options.error){
-                        options.error(res);
-                    }
+                    layer.msg(res.message, {
+                        icon: 2,
+                        time: 1000
+                    },function () {
+                        if (undefined !== options.error){
+                            options.error(res);
+                        }
+                    });
+                    return false;
                 }
             },
             error:function (res) {
