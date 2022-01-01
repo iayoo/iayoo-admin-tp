@@ -158,7 +158,7 @@
             }, function(index) {
                 layer.close(index);
                 request.post({
-                    url:MODULE_PATH + 'removeLog',
+                    url:"{:url('removeLog')}",
                     success: function(res) {
                         table.reload('dataTable');
                     },

@@ -53,4 +53,12 @@ class Administrator extends BaseController
         return $this->fetch('',$service->getPermission($this->request->param('id')));
     }
 
+    public function removeLog(AdministratorLogService $administratorLogService)
+    {
+        if ($administratorLogService->clear()){
+            return $this->success("操作成功");
+        }
+        return $this->error("操作失败");
+    }
+
 }
