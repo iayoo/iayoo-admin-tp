@@ -100,11 +100,11 @@
             request.post({
                 url:"{:url('status')}",
                 data:{status:status,id:id},
-                success: function (res) {
+                success: function (res) {},
+                error: function (res) {
                     $(data.elem).prop('checked',!$(data.elem).prop('checked'));
                     form.render()
-                },
-                error: function (res) {}
+                }
             });
         });
     })
