@@ -28,7 +28,8 @@
         "iayoo/api-response": "dev-master",
         "iayoo/services-helper": "dev-master",
         "topthink/think-migration": "^3.0",
-        "ext-mysqli": "*"
+        "ext-mysqli": "*",
+        "lcobucci/jwt": "^4.1"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
