@@ -6,20 +6,35 @@
 
 namespace app\api\controller;
 use app\services\JWTAuthService;
+use app\services\user\UserService;
+use think\exception\ValidateException;
 
 class User extends ApiBaseController
 {
-    public function login(JWTAuthService $service)
+    public function login(JWTAuthService $service,UserService $userService)
     {
-        dump($this->getParams());
-        dump($service->token());
+        $params = $this->getParams();
+        $user = $userService->get(['account'=>$params['account']]);
+        if (!$user){
+            throw new ValidateException("用户不存在");
+        }
+        $token = $service->token(
+            [
+                'id'       => $user['id'],
+                'nickname' => $user['nickname']
+            ]);
+        if (!$token){
+            throw new ValidateException("用户不存在");
+        }
+        return $this->success('登录成功',[
+            'access_token' => $token,
+            'id'           => $user['id'],
+            'nickname'     => $user['nickname']
+        ]);
     }
 
     public function check(JWTAuthService $service)
     {
-        dump($service
-            ->setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImZvbyI6ImJhciJ9.eyJpc3MiOiJodHRwOi8vZXhhbXBsZS5jb20iLCJhdWQiOiJodHRwOi8vZXhhbXBsZS5vcmciLCJqdGkiOiI0ZjFnMjNhMTJhYSIsImlhdCI6MTY0MTM2MTI2MywibmJmIjoxNjQxMzYxMzIzLCJleHAiOjE2NDEzNjQ4NjMsInVpZCI6MX0.RHEsCgWPRSTqVpPC9UQTm6xvxMmS5vZBnigkIpfJBcg')
-            ->auth()
-        );
+        dump($service->getAuthData());
     }
 }

@@ -17,6 +17,7 @@ use think\exception\ValidateException;
 
 class JWTAuthService
 {
+    private static $authData;
     /** @var Configuration */
     protected $config;
 
@@ -46,6 +47,14 @@ class JWTAuthService
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAuthData()
+    {
+        return self::$authData;
+    }
+
 
     /**
      * 初始化配置
@@ -66,29 +75,28 @@ class JWTAuthService
 
     /**
      * 生成token
+     * @param array $data
      * @return string token
      */
-    public function token(){
-        return $this->config->builder(ChainedFormatter::withUnixTimestampDates())
-            // Configures the issuer (iss claim)
-            ->issuedBy('http://example.com')
-            // Configures the audience (aud claim)
-            ->permittedFor('http://example.org')
-            // Configures the id (jti claim)
-            ->identifiedBy('4f1g23a12aa')
+    public function token($data = []){
+
+        $builder = $this->config->builder(ChainedFormatter::withUnixTimestampDates());
+
+        $builder->identifiedBy(config('jwt.jti'))
             // Configures the time that the token was issue (iat claim)
             ->issuedAt($this->time)
             // Configures the time that the token can be used (nbf claim)
             ->canOnlyBeUsedAfter($this->time->modify('+1 minute'))
             // Configures the expiration time of the token (exp claim)
-            ->expiresAt($this->time->modify('+1 hour'))
-            // Configures a new claim, called "uid"
-            ->withClaim('uid', 1)
+            ->expiresAt($this->time->modify('+' . config('jwt.expire_time') .' hour'))
             // Configures a new header, called "foo"
-            ->withHeader('foo', 'bar')
-            // Builds a new token
-            ->getToken($this->config->signer(), $this->config->signingKey())
-            ->toString();
+            ->withHeader('foo', 'bar');
+
+        foreach ($data as $key => $datum){
+            $builder->withClaim($key, $datum);
+        }
+
+        return $builder->getToken($this->config->signer(), $this->config->signingKey())->toString();
     }
 
     /**
@@ -114,6 +122,7 @@ class JWTAuthService
         if (($this->parserToken($this->token)->isExpired($this->time))){
             return false;
         }
+        self::$authData = $authData;
         return $authData;
     }
 
