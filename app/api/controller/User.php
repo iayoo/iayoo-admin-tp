@@ -11,6 +11,12 @@ use think\exception\ValidateException;
 
 class User extends ApiBaseController
 {
+    /**
+     * 账号密码登录
+     * @param JWTAuthService $service
+     * @param UserService $userService
+     * @return \Iayoo\ApiResponse\Response\ThinkPHP\JsonResponse
+     */
     public function login(JWTAuthService $service,UserService $userService)
     {
         $params = $this->getParams();
