@@ -36,6 +36,7 @@ layui.config({
 	context: "context",		// 上下文组件
 	http: "http",			// ajax请求组件
 	request: "request",			// request ajax请求组件
+	skuTable: "skuTable",			// request ajax请求组件
 	theme: "theme",			// 主题转换
 	message: "message",     // 通知组件
 	toast: "toast",          // 消息通知
