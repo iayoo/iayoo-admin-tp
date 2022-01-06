@@ -1,0 +1,221 @@
+{extend name="layout/iframe" /}
+
+{block name="head"}
+<style>
+    .sku-item{
+        position: relative;
+    }
+    .sku-item:hover .sku-item-remove {
+        opacity: 1;
+        filter:Alpha(opacity=1)
+    }
+    .sku-item .sku-item-remove{
+        content: '';
+        display: block;
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        height: 18px;
+        width: 18px;
+        opacity: 0;
+        filter:Alpha(opacity=100);
+        transition: opacity 0.5s;
+        background: url('/static/admin/images/del2.svg') no-repeat center/98%;/*兼容没测*/
+        background-color: #fff;
+
+    }
+    .layui-table-cell{
+        height: 40px;
+    }
+</style>
+
+{/block}
+{block name="body"}
+<body>
+<div>
+<script type="text/html" id="sku-list-html">
+    {{#  layui.each(d, function(index, item){ }}
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="padding: 5px 15px;">{{ item.name }}</label>
+        <div >
+            {{#  layui.each(item.skuItemList, function(skuIndex, skuItem){ }}
+            <a class="layui-btn layui-btn-sm layui-btn-primary layui-border sku-item">
+                <span class="sku-item-remove" onclick="handleRemoveSkuItem('{{ index+'-'+skuIndex }}')"> </span>
+                {{ skuItem.skuName }}
+            </a>
+            {{#  }); }}
+            <a class="layui-btn layui-btn-normal layui-btn-sm layui-border" onclick="handleAddSkuItem('{{ item.name }}')">
+                <span class="icon pear-icon add-bold pear-icon-add-bold"> </span>
+            </a>
+            <a class="layui-btn layui-btn-normal layui-btn-sm layui-border" onclick="handleRemoveSkuItem('{{ index }}')">
+                <span class="icon pear-icon ashbin pear-icon-ashbin"> </span>
+            </a>
+        </div>
+    </div>
+    {{#  }); }}
+</script>
+<script type="text/html" id="stockTpl">
+    <input type="text" autocomplete="off" class="layui-input">
+</script>
+
+
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="layui-card">
+                <div class="layui-card-header"> 规格
+                </div>
+                <div class="layui-card-body">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div >
+                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="handleAddSku()">
+                                添加规格
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="sku-list"></div>
+                    <table class="layui-hide" id="sku-table"></table>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['form','jquery','request','laytpl','table'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+        let request = layui.request;
+        let laytpl = layui.laytpl;
+        let table = layui.table;
+
+        let skuList = [];
+
+
+        // 渲染
+        window.renderSkuForm = function(){
+            let scriptHtml = $("#sku-list-html").html();
+            // 通过data数据渲染script模板
+            let view = document.getElementById('sku-list');
+            laytpl(scriptHtml).render(skuList, function (html) {
+                view.innerHTML = html;
+            });
+        }
+        window.handleAddSkuItem = function (item){
+            //默认prompt
+            layer.prompt(function(val, index){
+                // 关闭弹窗
+                layer.close(index);
+                skuList.map((res)=>{
+                    if (res.name === item){
+                        res.skuItemList.push({skuName:val,skuId:1})
+                    }
+                })
+                window.renderSkuForm();
+                window.renderSkuTable();
+            });
+        }
+        window.handleAddSku = function (){
+            //默认prompt
+            layer.prompt(function(val, index){
+                // 关闭弹窗
+                layer.close(index);
+                skuList.push({skuItemList:[],name:val})
+                console.log(skuList)
+                window.renderSkuForm();
+                window.renderSkuTable();
+            });
+        }
+        window.handleRemoveSkuItem = function (index){
+            //默认prompt
+            let indexArr = index.split('-')
+
+            let skuName = skuList[indexArr[0]].name;
+
+
+            if (indexArr[1] !== undefined){
+                //询问框
+                let skuItemName = skuList[indexArr[0]].skuItemList[indexArr[1]].skuName;
+                layer.confirm('是否要删除'+ skuName +'-'+ skuItemName +'？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(index){
+                    layer.close(index);
+                    skuList[indexArr[0]].skuItemList.splice(indexArr[1],1);
+                    window.renderSkuForm();
+                    window.renderSkuTable();
+                });
+            }else{
+                layer.confirm('是否要删除'+ skuName  +'？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(index){
+                    layer.close(index);
+                    skuList.splice(indexArr[0],1);
+                    window.renderSkuForm();
+                    window.renderSkuTable();
+                });
+            }
+        }
+        let skuTableData = [];
+
+        window.renderSkuTable = function(){
+
+            let oldSkuTableData = skuTableData;
+            skuTableData = [];
+            for (const skuListKey in skuList) {
+                for (const skuItemListKey in skuList[skuListKey].skuItemList) {
+                    for (const skuTableDataKey in skuTableData) {
+                        if (skuTableData[skuTableDataKey].id === skuListKey + "-" + skuItemListKey){
+                            skuTableData.push(skuTableData[skuTableDataKey]);
+                            break;
+                        }
+                    }
+                    skuTableData.push({
+                        'id':skuListKey + "-" + skuItemListKey,
+                        'sku':skuList[skuListKey].name + "-" + skuList[skuListKey].skuItemList[skuItemListKey].skuName
+                    })
+                }
+            }
+            table.render({
+                elem: '#sku-table'
+                ,data:skuTableData
+                ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                ,cols: [[
+                    {field:'id', width:80, title: 'ID',}
+                    ,{field:'sku', width:200, title: '规格'}
+                    ,{field:'sku', width:200, title: '图片'}
+                    ,{field:'skuNum', width:200, title: 'sku码',templet: '#stockTpl', unresize: true}
+                    ,{field:'stock', width:200, title: '库存',templet: '#stockTpl', unresize: true}
+                    ,{field:'price', width:200, title: '价格',templet: '#stockTpl', unresize: true}
+                    ,{field:'price', width:200, title: '成本价',templet: '#stockTpl', unresize: true}
+                ]]
+            });
+        }
+
+        window.renderSkuForm();
+        window.renderSkuTable();
+
+
+        form.on('submit(save)', function(data){
+            request.post({
+                data:data.field,
+                isClose:true,
+                reloadTable:'dataTable',
+                success: function (res) {
+                },
+                error: function (res) {}
+            });
+            return false;
+        });
+    })
+
+
+</script>
+</body>
+
+{/block}
