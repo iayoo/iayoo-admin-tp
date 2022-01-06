@@ -1,0 +1,198 @@
+{extend name="layout/iframe" /}
+
+{block name="head"}
+<style>
+    .sku-item{
+        position: relative;
+    }
+    .sku-item:hover .sku-item-remove {
+        opacity: 1;
+        filter:Alpha(opacity=1)
+    }
+    .sku-item .sku-item-remove{
+        content: '';
+        display: block;
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        height: 18px;
+        width: 18px;
+        opacity: 0;
+        filter:Alpha(opacity=100);
+        transition: opacity 0.5s;
+        background: url('/static/admin/images/del2.svg') no-repeat center/98%;/*兼容没测*/
+        background-color: #fff;
+
+    }
+    .layui-table-cell{
+        height: 40px;
+    }
+</style>
+
+{/block}
+{block name="body"}
+<body>
+<div>
+
+<script type="text/html" id="stockTpl">
+    <input type="text" autocomplete="off" class="layui-input">
+</script>
+
+
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="layui-card">
+                <div class="layui-card-header"> 规格
+                </div>
+                <div class="layui-card-body">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div >
+                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="handleAddSku()">
+                                添加规格
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="sku-list"></div>
+                    <table class="layui-hide" id="sku-table"></table>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+
+
+    layui.use(['form','jquery','request','laytpl','table','skuTable'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+        let request = layui.request;
+        let laytpl = layui.laytpl;
+        let table = layui.table;
+        let skuTable = layui.skuTable;
+
+        let skuList = [
+            {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
+            {'field':'内存',child:[{value:'128G'},{value:'256G'}]},
+        ];
+
+
+        // 渲染
+        skuTable.renderForm("sku-list");
+        skuTable.render("sku-table");
+
+        let skuTableData = [];
+
+        /**
+         *
+         * @param colIndex:table中列索引
+         * @param startIndex：合并单元格起始索引
+         * @param endIndex：合并单元格结束索引
+         * @param trArr：单列单元格元素集合
+         * @param data：后端返回数据集合
+         * @param colName：当前列字段名
+         */
+        function mergeSomeRows(colIndex,startIndex,endIndex,trArr,data,colName) {
+            let mark = 1;
+            for (let j = startIndex + 1; j < endIndex; j++) {
+                ++mark;
+                let tdCurArr = trArr.eq(j).find("td").eq(colIndex);//获取当前行的当前列
+                let tdPreArr = trArr.eq(startIndex).find("td").eq(colIndex);//获取相同列的第一列
+                if (data[j][colName] === data[j - 1][colName]) { //后一行的值与前一行的值做比较，相同就需要合并
+                    //相同列的第一列增加rowspan属性
+                    tdPreArr.each(function () {
+                        $(this).attr("rowspan", mark);
+                    });
+                    //当前行隐藏
+                    tdCurArr.each(function () {
+                        $(this).css("display", "none");
+                    });
+                } else {
+                    mark = 1;
+                    startIndex = j;
+                }
+            }
+        }
+
+        function merge(res) {
+            //初始化分割点
+            let indexPoint = [0];
+            let data = res.data;
+            let mergeIndex = 0;//定位需要添加合并属性的行数
+            let mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
+            //列名集合["orderNumber","reagentName","chineseVulgo","component","specifications","componentShelf","remarks"];
+            /**
+             * 执行第一列，已序号分组为准，产生分割点并保存
+             */
+            let trArr = $(".layui-table-body>.layui-table").find("tr");//所有行
+            for (let i = 1; i < res.data.length; i++) { //这里循环表格当前的数据
+                let tdCurArr = trArr.eq(i).find("td").eq(0);//获取当前行的当前列
+                let tdPreArr = trArr.eq(mergeIndex).find("td").eq(0);//获取相同列的第一列
+                // console.log(k);
+                if (data[i].orderNumber === data[i - 1].orderNumber) { //后一行的值与前一行的值做比较，相同就需要合并
+                    mark += 1;
+                    //相同列的第一列增加rowspan属性
+                    tdPreArr.each(function () {
+                        $(this).attr("rowspan", mark);
+                    });
+                    //当前行隐藏
+                    tdCurArr.each(function () {
+                        $(this).css("display", "none");
+                    });
+                }else {
+                    //保存分割点
+                    indexPoint.push(i)
+                    mergeIndex = i;
+                    mark = 1;//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+                }
+            }
+            //补全最后一个分割点
+            indexPoint.push(res.data.length)
+            // console.log("合并索引点集合：",indexPoint)
+            //依据拿到的分割点，对其他6列进行合并处理
+            for(let i = 0;i<indexPoint.length;i++){
+                let startIndex=0;
+                if(i!==0){
+                    startIndex = indexPoint[i-1];
+                }
+                for(let j=startIndex;j<indexPoint[i];j++){
+                    //以第一列产生的区域分割点为基准，执行后面6列合并逻辑
+                    mergeSomeRows(1,startIndex,indexPoint[i],trArr,data,'reagentName');
+                    mergeSomeRows(2,startIndex,indexPoint[i],trArr,data,'chineseVulgo');
+                    mergeSomeRows(3,startIndex,indexPoint[i],trArr,data,'component');
+                    mergeSomeRows(4,startIndex,indexPoint[i],trArr,data,'specifications');
+                    mergeSomeRows(5,startIndex,indexPoint[i],trArr,data,'componentShelf');
+                    mergeSomeRows(6,startIndex,indexPoint[i],trArr,data,'remarks');
+                }
+            }
+        }
+
+
+        // window.renderSkuForm();
+        // window.renderSkuTable();
+
+
+        form.on('submit(save)', function(data){
+            request.post({
+                data:data.field,
+                isClose:true,
+                reloadTable:'dataTable',
+                success: function (res) {
+                },
+                error: function (res) {}
+            });
+            return false;
+        });
+    })
+
+
+</script>
+</body>
+
+{/block}

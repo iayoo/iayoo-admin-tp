@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace app\command;
 
+use DateTimeImmutable;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
@@ -21,6 +22,12 @@ class Test extends Command
 
     protected function execute(Input $input, Output $output)
     {
+//        DateTimeImmutable::;
+        $date = (DateTimeImmutable::createFromFormat('U.u', "1641351478.060648"));
+        dump($date);
+        $date = $date->setTimezone(new \DateTimeZone("Asia/Shanghai"));
+        dump($date);
+        die();
         // 指令输出
         $output->writeln('app\command\test');
 
