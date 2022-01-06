@@ -43,20 +43,18 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
      * @returns {any|*[]|U}
      */
     function descartes() {
+        let res = {
+            child: []
+        };
         if (arguments[0].length < 2){
-            // field,value
-            let res = {}
-            console.log(arguments[0])
-            res.child = [arguments[0]]
+            arguments[0][0].child.forEach(function (i) {
+                res.child.push([i])
+            })
             return res;
         }
         return [].reduce.call(arguments[0], function(col, set) {
-            let res = {
-                child: []
-            };
-            if (res)
             if (col.child === undefined || set.child.length<=0) {
-                res.child = [col.child]
+                res.child = col.child
                 return res
             }
             col.child.forEach(function(c) {
@@ -120,8 +118,6 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         for (let i = 1; i < res.data.length; i++) { //这里循环表格当前的数据
             let tdCurArr = trArr.eq(i).find("td").eq(0);//获取当前行的当前列
             let tdPreArr = trArr.eq(mergeIndex).find("td").eq(0);//获取相同列的第一列
-            console.log(data[i - 1]);
-            console.log(data[i]);
 
             mergeField.forEach(function (fieldName) {
                 if (data[i][fieldName] === data[i - 1][fieldName]) { //后一行的值与前一行的值做比较，相同就需要合并
@@ -146,7 +142,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         }
         //补全最后一个分割点
         indexPoint.push(res.data.length)
-        console.log("合并索引点集合：",indexPoint)
+        // console.log("合并索引点集合：",indexPoint)
 //依据拿到的分割点，对其他6列进行合并处理
 //             for(var i = 0;i<indexPoint.length;i++){
 //                 var startIndex=0;
@@ -193,7 +189,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         layer.prompt(function(val, pageIndex){
             // 关闭弹窗
             layer.close(pageIndex);
-            skuData[Number(index)].child.push({value:val,skuId:1});
+            skuData[Number(index)].child.push({value:val,field:skuData[Number(index)].field});
             skuTable.renderForm();
             skuTable.render();
         });
@@ -239,9 +235,10 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
     skuTable.render = function(tableEl){
         if (tableEl!==undefined) skuTable.table = tableEl;
         let tableColsOption = [];
+        // console.log(skuData);
         let data = descartes(skuData);
         console.log("渲染 sku table");
-        console.log(data)
+        // console.log(data)
         let mergeField = []
         skuData.forEach(function (sku) {
             tableColsOption.push({
@@ -262,6 +259,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         if (data.child !== undefined){
             data.child.forEach(function(sku){
                 if (sku === undefined)return null;
+
                 let i = {
                     'sku_number':'',
                     'pic':'',
@@ -269,7 +267,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
                     'price':'',
                 };
                 console.log("sku item data")
-                console.log(sku)
+                // console.log(sku)
                 sku.forEach(function (skuItem) {
                     i[skuItem.field] = skuItem.value;
                 })
@@ -277,7 +275,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
             })
         }
 
-        console.log(tableData)
+        // console.log(tableData)
         table.render({
             elem: '#' + skuTable.table
             ,data:tableData
