@@ -28,13 +28,8 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
     let laytpl = layui.laytpl;
     let table = layui.table;
 
-    // let skuList = [
-    //     {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
-    //     {'field':'内存',child:[{value:'128G'},{value:'256G'}]},
-    // ];
-
     let skuData = [
-        // {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
+        {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
         // {'field':'内存',child:[{value:'128G'},{value:'256G'}]},
         // {'field':'套餐',child:[{value:'裸机'},{value:'官配'}]},
     ]
@@ -51,9 +46,9 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
             let res = [];
             let field = arguments[0][0].field;
             arguments[0][0].child.forEach(function (f) {
-                res.push({'field':field,'value':f.value})
+                res.push([{'field':field,'value':f.value}])
             })
-            return [res];
+            return res;
         }
         return arguments[0].reduce(function (pre,cur) {
             let c = [];
@@ -134,7 +129,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
                 }
                 col++
             })
-
+            console.log(res.data);
             res.data.reduce(function (pre,cur) {
                 let tdCurArr = trArr.eq(index+1).find("td").eq(curCol);//获取当前行的当前列
                 if (pre[fieldName] === cur[fieldName]){
@@ -246,7 +241,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         // console.log(skuData);
         let data = descartes(skuData);
         console.log("渲染 sku table");
-        // console.log(data)
+        console.log(data)
         let mergeField = []
         skuData.forEach(function (sku) {
             tableColsOption.push({
