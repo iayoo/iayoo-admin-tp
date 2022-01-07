@@ -34,9 +34,9 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
     // ];
 
     let skuData = [
-        {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
-        {'field':'内存',child:[{value:'128G'},{value:'256G'}]},
-        {'field':'套餐',child:[{value:'裸机'},{value:'官配'}]},
+        // {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
+        // {'field':'内存',child:[{value:'128G'},{value:'256G'}]},
+        // {'field':'套餐',child:[{value:'裸机'},{value:'官配'}]},
     ]
 
     /**
@@ -45,6 +45,9 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
      */
     function descartes() {
         if (arguments[0].length < 2){
+            if (arguments[0][0] === undefined){
+                return [];
+            }
             let res = [];
             let field = arguments[0][0].field;
             arguments[0][0].child.forEach(function (f) {
@@ -113,15 +116,14 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
 
     function merge(res,mergeField) {
         //初始化分割点
-        let indexPoint = [];
-        let data = res.data;
-
-        //列名集合["orderNumber","reagentName","chineseVulgo","component","specifications","componentShelf","remarks"];
-        /**
-         * 执行第一列，已序号分组为准，产生分割点并保存
-         */
         let trArr = $(".layui-table-body>.layui-table").find("tr");//所有行
         let tdHeaderArr = $(".layui-table-header>.layui-table").find("th");//所有行
+        let mergeIndexArr = [];
+
+        //这里涉及到简单的运算，mark是计算每次需要合并的格子数
+        let mark = 1;
+        let index = 0;
+        let mergeIndex = 0;
         mergeField.forEach(function (fieldName) {
             let col = 0;
             let curCol = 0;
@@ -130,66 +132,41 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
                 if ($(this).data('field') === fieldName){
                     curCol = col;
                 }
-                // console.log($(this).data('field'),fieldName,curCol)
                 col++
             })
-            //这里涉及到简单的运算，mark是计算每次需要合并的格子数
-            let mark = 1;
-            let mergeIndex = 0;//定位需要添加合并属性的行数
-            for (let i = 1; i < res.data.length; i++) { //这里循环表格当前的数据
-                let tdCurArr = trArr.eq(i).find("td").eq(0);//获取当前行的当前列
-                let tdPreArr = trArr.eq(mergeIndex).find("td").eq(0);//获取相同列的第一列
-                // console.table({
-                //     'fieldName':fieldName,
-                //     'i':data[i][fieldName],
-                //     'i-1':data[i-1][fieldName],
-                //     'i2':i,
-                //     'mark':mark,
-                //     'mergeIndex':mergeIndex,
-                // })
-                if (data[i][fieldName] === data[i - 1][fieldName]) { //后一行的值与前一行的值做比较，相同就需要合并
+
+            res.data.reduce(function (pre,cur) {
+                let tdCurArr = trArr.eq(index+1).find("td").eq(curCol);//获取当前行的当前列
+                if (pre[fieldName] === cur[fieldName]){
                     mark += 1;
-                    //相同列的第一列增加rowspan属性
-                    // tdPreArr.each(function () {
-                    //     $(this).attr("rowspan", mark);
-                    // });
-                    //当前行隐藏
                     tdCurArr.each(function () {
                         $(this).css("display", "none");
                     });
-                }else {
-                    console.log(trArr.eq(mergeIndex).find("td").eq(curCol))
-                    res = trArr.eq(mergeIndex).find("td").eq(curCol).attr("rowspan", mark);
-                    //保存分割点
-                    // indexPoint.push(i)
-                    mergeIndex = i;
-                    mark = 1;//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+                }else{
+                    if (mark>1){
+                        mergeIndexArr.push({'mark':mark,index:mergeIndex,fieldName:fieldName,colIndex:curCol})
+                    }
+                    mark = 1;
+                    mergeIndex = index+1;
                 }
+                index += 1;
+                return cur;
+            })
+            if (mark>1){
+                mergeIndexArr.push({'mark':mark,index:mergeIndex,fieldName:fieldName,colIndex:curCol})
             }
-            res = trArr.eq(mergeIndex).find("td").eq(curCol).attr("rowspan", mark);
-            mergeIndex = i;
-            mark = 1;//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+            mark = 1;
+            index = 0;
+            mergeIndex = index;
         })
 
-        //补全最后一个分割点
-        // indexPoint.push(res.data.length)
-        // console.log("合并索引点集合：",indexPoint)
-//依据拿到的分割点，对其他6列进行合并处理
-//             for(var i = 0;i<indexPoint.length;i++){
-//                 var startIndex=0;
-//                 if(i!=0){
-//                     startIndex = indexPoint[i-1];
-//                 }
-//                 for(var j=startIndex;j<indexPoint[i];j++){
-//                     //以第一列产生的区域分割点为基准，执行后面6列合并逻辑
-//                     mergeSomeRows(1,startIndex,indexPoint[i],trArr,data,'reagentName');
-//                     mergeSomeRows(2,startIndex,indexPoint[i],trArr,data,'chineseVulgo');
-//                     mergeSomeRows(3,startIndex,indexPoint[i],trArr,data,'component');
-//                     mergeSomeRows(4,startIndex,indexPoint[i],trArr,data,'specifications');
-//                     mergeSomeRows(5,startIndex,indexPoint[i],trArr,data,'componentShelf');
-//                     mergeSomeRows(6,startIndex,indexPoint[i],trArr,data,'remarks');
-//                 }
-//             }
+        // console.log(mergeIndexArr)
+        mergeIndexArr.forEach(function (merger) {
+            let tdPreArr = trArr.eq(merger.index).find("td").eq(merger.colIndex);
+            tdPreArr.each(function () {
+                $(this).attr("rowspan",merger.mark);
+            });
+        })
     }
 
     const skuTable = {
@@ -269,7 +246,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         // console.log(skuData);
         let data = descartes(skuData);
         console.log("渲染 sku table");
-        console.log(data)
+        // console.log(data)
         let mergeField = []
         skuData.forEach(function (sku) {
             tableColsOption.push({
