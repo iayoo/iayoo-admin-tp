@@ -91,37 +91,6 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         })
     }
 
-    /**
-     *
-     * @param colIndex:table中列索引
-     * @param startIndex：合并单元格起始索引
-     * @param endIndex：合并单元格结束索引
-     * @param trArr：单列单元格元素集合
-     * @param data：后端返回数据集合
-     * @param colName：当前列字段名
-     */
-    function mergeSomeRows(colIndex,startIndex,endIndex,trArr,data,colName) {
-        let mark = 1;
-        for (let j = startIndex + 1; j < endIndex; j++) {
-            ++mark;
-            let tdCurArr = trArr.eq(j).find("td").eq(colIndex);//获取当前行的当前列
-            let tdPreArr = trArr.eq(startIndex).find("td").eq(colIndex);//获取相同列的第一列
-            if (data[j][colName] === data[j - 1][colName]) { //后一行的值与前一行的值做比较，相同就需要合并
-                // console.log()
-                //相同列的第一列增加rowspan属性
-                tdPreArr.each(function () {
-                    $(this).attr("rowspan", mark);
-                });
-                //当前行隐藏
-                tdCurArr.each(function () {
-                    $(this).css("display", "none");
-                });
-            } else {
-                mark = 1;
-                startIndex = j;
-            }
-        }
-    }
 
     function merge(res,mergeField) {
         //初始化分割点
@@ -273,9 +242,9 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         })
         tableColsOption.push(
             {field:'skuNum', width:200, title: 'sku码',templet: '#stockTpl', unresize: true,align:'center'}
-            ,{field:'stock', width:200, title: '库存',templet: '#stockTpl', unresize: true,align:'center'}
-            ,{field:'price', width:200, title: '价格',templet: '#stockTpl', unresize: true,align:'center'}
-            ,{field:'price', width:200, title: '成本价',templet: '#stockTpl', unresize: true,align:'center'}
+            ,{field:'stock', width:120, title: '库存',templet: '#stockTpl', unresize: true,align:'center'}
+            ,{field:'price', width:120, title: '价格',templet: '#stockTpl', unresize: true,align:'center'}
+            ,{field:'price', width:120, title: '成本价',templet: '#stockTpl', unresize: true,align:'center'}
         )
         // console.log(tableColsOption)
         let tableData = [];
