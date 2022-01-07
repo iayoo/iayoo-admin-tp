@@ -129,6 +129,9 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
                 }
                 col++
             })
+            if (res.data.length <= 0){
+                return null;
+            }
             console.log(res.data);
             res.data.reduce(function (pre,cur) {
                 let tdCurArr = trArr.eq(index+1).find("td").eq(curCol);//获取当前行的当前列
