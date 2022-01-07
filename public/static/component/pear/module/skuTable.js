@@ -206,7 +206,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
 
     window.handleAddSkuItem = function (index){
         //默认prompt
-        layer.prompt(function(val, pageIndex){
+        layer.prompt({title:'添加sku属性'},function(val, pageIndex){
             // 关闭弹窗
             layer.close(pageIndex);
             skuData[Number(index)].child.push({value:val,field:skuData[Number(index)].field});
@@ -216,7 +216,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
     }
     window.handleAddSku = function (){
         //默认prompt
-        layer.prompt(function(val, index){
+        layer.prompt({title:'添加规格'},function(val, index){
             // 关闭弹窗
             layer.close(index);
             skuData.push({child:[],field:val})
