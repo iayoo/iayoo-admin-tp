@@ -29,7 +29,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
     let table = layui.table;
 
     let skuData = [
-        {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
+        // {'field':'颜色',child:[{value:'红色'},{value:'蓝色'}]},
         // {'field':'内存',child:[{value:'128G'},{value:'256G'}]},
         // {'field':'套餐',child:[{value:'裸机'},{value:'官配'}]},
     ]
@@ -146,7 +146,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
             if (res.data.length <= 0){
                 return null;
             }
-            console.log(res.data);
+            // console.log(res.data);
             res.data.reduce(function (pre,cur) {
                 let tdCurArr = trArr.eq(index+1).find("td").eq(curCol);//获取当前行的当前列
                 if (pre[fieldName] === cur[fieldName]){
