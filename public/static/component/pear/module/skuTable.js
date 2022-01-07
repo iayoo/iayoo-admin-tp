@@ -258,9 +258,12 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
         // console.log(skuData);
         let data = descartes(skuData);
         console.log("渲染 sku table");
-        console.log(data)
+        // console.log(data)
         let mergeField = []
         skuData.forEach(function (sku) {
+            if (sku.child.length<=0){
+                return;
+            }
             tableColsOption.push({
                 field:sku.field,
                 title:sku.field,
@@ -299,6 +302,7 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
             elem: '#' + skuTable.table
             ,data:tableData
             ,limit:100
+            // ,skin: 'line'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [tableColsOption]
             ,done:function(res,curr,count) {
