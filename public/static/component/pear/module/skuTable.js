@@ -68,6 +68,20 @@ layui.define(['jquery', 'layer','laytpl','table'], function (exports) {
             }else{
                 p = pre;
             }
+
+            if (c.length<=0){
+                p.forEach(function (pItem) {
+                    next.push([].concat(pItem))
+                })
+                return next;
+            }
+            if (p.length<=0){
+                c.forEach(function (cItem) {
+                    next.push([].concat(cItem))
+                })
+                return next;
+            }
+
             p.forEach(function (pItem) {
                 c.forEach(function (cItem) {
                     next.push([].concat(pItem,cItem))
