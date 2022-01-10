@@ -33,7 +33,8 @@ class FileService extends \app\services\BaseService
     {
         if (is_array($files)){
             foreach ($files as $file){
-                $this->saveName[] = \think\facade\Filesystem::disk('public')->putFile( 'uploads', $file,'md5');
+                $path = \think\facade\Filesystem::disk('public')->putFile( 'uploads', $file,'md5');
+                $this->saveName[] = "/storage/" . $path;
             }
         }
         $this->afterUpload();
