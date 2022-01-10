@@ -15,6 +15,9 @@ class FileService extends \app\services\BaseService
      */
     public function getSaveName()
     {
+        if (count($this->saveName) > 0){
+            return $this->saveName[count($this->saveName)-1];
+        }
         return $this->saveName;
     }
 
@@ -26,9 +29,13 @@ class FileService extends \app\services\BaseService
         $this->saveName = $saveName;
     }
 
-    public function upload($file)
+    public function upload($files)
     {
-        $this->saveName = \think\facade\Filesystem::disk('public')->putFile( 'uploads', $file,'md5');
+        if (is_array($files)){
+            foreach ($files as $file){
+                $this->saveName[] = \think\facade\Filesystem::disk('public')->putFile( 'uploads', $file,'md5');
+            }
+        }
         $this->afterUpload();
     }
 
