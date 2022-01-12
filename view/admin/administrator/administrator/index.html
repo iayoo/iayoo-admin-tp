@@ -241,10 +241,20 @@
                 maxmin: true,
                 title: '回收站',
                 shade: 0.1,
-                area: screen(),
+                area: ['60%','80%'],
+                btn: ['确定', '取消'],
                 content: MODULE_PATH + 'recycle',
                 cancel: function () {
                     table.reload('dataTable');
+                },
+                success: function(dom, index) {
+                    //通过索引获取到当前iframe弹出层
+                    var iframe = window['layui-layer-iframe' + index];
+                    //调用iframe弹出层内的方法
+                    iframe.setting({'max':1});
+                },
+                yes:function (index, layero){
+                    console.log(layero)
                 }
             });
         }

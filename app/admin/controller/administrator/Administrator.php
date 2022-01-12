@@ -61,4 +61,7 @@ class Administrator extends BaseController
         return $this->error("操作失败");
     }
 
+    public function recycle(){
+        return $this->fetch();
+    }
 }
