@@ -34,15 +34,15 @@
         .image-item::before{
             content: '';
             background: url(/static/admin/images/del-3.svg) center center no-repeat;
-            width: 12px;
-            height: 12px;
+            width: 20px;
+            height: 20px;
             position: absolute;
-            background-size: contain;
-            top: 5px;
-            right: 5px;
+            top: 2px;
+            right: 2px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s linear;
+            background-size: 14px;
         }
 
     </style>
@@ -51,7 +51,7 @@
     <div class="image-select">
         <div class="list">
             <div class="content">
-                <div class="image-item" onclick="select_image(this)">
+                <div class="image-item" >
                     <img src="/static/admin/images/act.jpg" alt="">
                 </div>
                 <div class="image-item selected" onclick="select_image(this)">
@@ -74,14 +74,20 @@
                 console.log(opt)
             }
 
-            window.select_image = function (obj){
-                let _this = $(obj);
-                if (_this.hasClass('selected')){
-                    _this.removeClass('selected');
+            $(".image-item").on('click',function(event,obj){
+                console.log('del')
+            });
+
+            $(".image-item>img").on('click',function(event,obj){
+                let _this = $(event.currentTarget)
+                if (_this.parent().hasClass('selected')){
+                    _this.parent().removeClass('selected');
                 }else{
-                    _this.addClass('selected')
+                    _this.parent().addClass('selected')
                 }
-            }
+                event.stopPropagation()
+                return false
+            });
         })
     </script>
 </body>
