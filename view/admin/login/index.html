@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <title>后台管理系统</title>
+
+    <script>
+        // 检测如果是iframe跳转登录，则检测上级href是否一致
+        if (parent.location.href !== location.href) {
+            parent.location.href = location.href;
+        }
+    </script>
     <!-- 样 式 文 件 -->
         <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
         <link rel="stylesheet" href="/static/admin/css/other/login2.css"/>
@@ -30,6 +37,7 @@
             background-color: rgba(126,126,126,0.8);
         }
     </style>
+
 </head>
 <!-- 代 码 结 构 -->
 <body style="background-size: cover;">
@@ -93,10 +101,6 @@
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
-    // 检测如果是iframe跳转登录，则检测上级href是否一致
-    if (parent.location.href !== location.href) {
-        parent.location.href = location.href;
-    }
     layui.use(['form', 'layer', 'jquery', 'request'], function () {
         var $ = layui.jquery
             , request = layui.request
