@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>图片选择器</title>
+
+    <link rel="stylesheet" href="/static/component/layui/css/layui.css" />
     <style>
         .image-select > .list > .content > .image-item > img{
             /*width: 120px;*/
@@ -25,6 +27,7 @@
             width: 100%;
             justify-content: center;
             align-content: center;
+            z-index: 1;
         }
 
         .image-select > .list > .content{
@@ -37,7 +40,7 @@
             position: absolute;
             top: 0px;
             left: 0px;
-            z-index: -1;
+            /*z-index: -1;*/
             border: 2px solid #964ad9;
         }
         .image-item:hover::before{
@@ -96,21 +99,29 @@
         .image-item:hover > .title {
             animation:myfirst .2s;
             transform:translateY(-80px);
+            z-index: 1;
         }
 
     </style>
 </head>
 <body>
-
-    <button class="layui-btn layui-btn-normal"></button>
-    <div class="image-select">
-        <div class="list">
-            <div class="content" id="img-list">
-            </div>
-
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <button class="layui-btn layui-btn-normal">
+                <i class="layui-icon"></i>
+                上传文件</button>
         </div>
-
+        <div class="layui-card-body">
+            <div class="image-select">
+                <div class="list">
+                    <div class="content" id="img-list"></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
     <script id="img-content" type="text/html">
         {{#  layui.each(d.data, function(index, item){ }}
         <div class="image-item" data-img-url="{{ item.path }}" data-img-id="{{ item.id }}" data-img-filename="{{ item.filename }}">
@@ -172,6 +183,11 @@
                                 _this.remove()
                                 layer.close(index)
                             });
+                        });
+
+                        $(".image-item>.title").on('click',function(event,obj){
+                            event.stopPropagation()
+                            return false
                         });
 
                         $(".image-item>.image-section").on('click',function(event,obj){
