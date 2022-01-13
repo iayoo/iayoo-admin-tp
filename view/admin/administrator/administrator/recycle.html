@@ -51,13 +51,13 @@
     <div class="image-select">
         <div class="list">
             <div class="content">
-                <div class="image-item" >
+                <div class="image-item" data-img-url="/static/admin/images/act.jpg" data-img-id="1" data-img-filename="act.jpg">
+                    <img src="/static/admin/images/act.jpg">
+                </div>
+                <div class="image-item" data-img-url="/static/admin/images/act.jpg" data-img-id="1" data-img-filename="act.jpg">
                     <img src="/static/admin/images/act.jpg" alt="">
                 </div>
-                <div class="image-item selected" onclick="select_image(this)">
-                    <img src="/static/admin/images/act.jpg" alt="">
-                </div>
-                <div class="image-item" onclick="select_image(this)">
+                <div class="image-item" data-img-url="/static/admin/images/act.jpg" data-img-id="1" data-img-filename="act.jpg">
                     <img src="/static/admin/images/act.jpg" alt="">
                 </div>
             </div>
@@ -74,8 +74,30 @@
                 console.log(opt)
             }
 
+            window.getSelectedItem = function (){
+                let img_list = $(".image-select>.list>.content>.selected");
+                let return_list = [];
+                if (img_list.length > 0){
+                    for (let i = 0;i < img_list.length;i++){
+                        return_list.push({
+                            'url':$(img_list[i]).data('img-url'),
+                            'filename':$(img_list[i]).data('img-filename'),
+                            'id':$(img_list[i]).data('img-id'),
+                        })
+                    }
+                }
+                return return_list;
+            }
+
             $(".image-item").on('click',function(event,obj){
-                console.log('del')
+                let _this = $(event.currentTarget)
+                let filename = _this.data('img-filename')
+                console.log(_this.data('image-url'))
+                layer.confirm('是否删除'+ filename +'？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    layer.msg('的确很重要', {icon: 1});
+                });
             });
 
             $(".image-item>img").on('click',function(event,obj){
