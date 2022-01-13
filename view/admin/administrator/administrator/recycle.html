@@ -21,6 +21,7 @@
             align-items: center;
             flex-direction: column;
             overflow: hidden;
+
         }
         .image-select > .list > .content > .image-item > .image-section{
             display: flex;
@@ -32,6 +33,7 @@
 
         .image-select > .list > .content{
             display: flex;
+            flex-wrap: wrap;
         }
         .content > .image-item.selected:after{
             content: '';
@@ -59,6 +61,7 @@
             visibility: hidden;
             transition: all 0.2s linear;
             background-size: 18px;
+            z-index: 2;
         }
 
         .image-item > .title  {
@@ -107,7 +110,7 @@
 <body>
     <div class="layui-card">
         <div class="layui-card-header">
-            <button class="layui-btn layui-btn-normal">
+            <button class="layui-btn layui-btn-normal" id="file-upload-btn">
                 <i class="layui-icon layui-icon-upload-drag"></i>
                 上传文件</button>
         </div>
@@ -148,10 +151,62 @@
     <script src="/static/component/layui/layui.js"></script>
     <script src="/static/component/pear/pear.js"></script>
     <script>
-        layui.use(['request','jquery','request','laytpl'], function() {
+        layui.use(['request','jquery','request','laytpl','upload'], function() {
             let $ = layui.jquery;
             let request = layui.request;
             let laytpl = layui.laytpl;
+            let upload = layui.upload;
+
+            function addImgItem(data){
+
+                let html = "<div class='image-item' data-img-url='"
+                    + data.path
+                    + "' data-img-id='"
+                    + data.id + "' data-img-filename='"
+                    + data.filename + "'>";
+                html += "<div class='image-section'>"
+
+                if(data.ext === "jpg" || data.ext === "jpeg" || data.ext === "png" || data.ext === "svg"){
+                    html += "<img src='" + data.path + "' width='99%' alt=''>"
+                }else{
+                    html += "<img src='/static/admin/images/filetype_icon/"+ data.ext +".png' width='50px' height='50px' alt=''>"
+                }
+                html += "</div><div class='title'><p>" + data.filename + "</p></div></div>";
+                let newDom = $(html)
+                let lists = $("#img-list>.image-item");
+                if (lists.length >= 20){
+                    console.log(1)
+                    lists.last().remove();
+                }
+                lists.first().before(newDom)
+            }
+            //常规使用 - 普通图片上传
+            let uploadInst = upload.render({
+                elem: '#file-upload-btn'
+                ,url: '{:url("file.file/upload")}' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    layer.msg('上传成功',function (obj,index){
+                        res.data.map(function (item) {
+                            addImgItem(item)
+                        })
+                    });
+
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+
             window.getSelectedItem = function (){
                 let img_list = $(".image-select>.list>.content>.selected");
                 let return_list = [];
@@ -195,7 +250,6 @@
             request.post({
                 url:"{:url('file.file/index',['limit'=>20])}",
                 success:function(res){
-                    console.log(res.data.data)
                     let getTpl = $("#img-content").html();
                     laytpl(getTpl).render(res.data, function(html){
                         let view = $('#img-list').html(html)
