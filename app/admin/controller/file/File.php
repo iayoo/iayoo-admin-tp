@@ -10,6 +10,13 @@ class File extends BaseController
     /** @var FileService */
     protected $service = FileService::class;
 
+    public function index()
+    {
+        if ($this->request->isAjax()){
+            return $this->success($this->service->searchList([]));
+        }
+    }
+
     public function upload()
     {
         // 获取表单上传文件

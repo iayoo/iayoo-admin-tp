@@ -5,25 +5,38 @@
     <title>图片选择器</title>
     <style>
         .image-select > .list > .content > .image-item > img{
-            width: 120px;
-            height: 120px;
+            /*width: 120px;*/
+            /*height: 120px;*/
         }
         .image-select > .list > .content > .image-item{
             margin:12px;
             position: relative;
             padding: 1px;
+            display: flex;
+            width: 120px;
+            height: 120px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
         }
+        .image-select > .list > .content > .image-item > .image-section{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-content: center;
+        }
+
         .image-select > .list > .content{
             display: flex;
         }
         .content > .image-item.selected:after{
             content: '';
-            /* background: #0C0C0C; */
-            height: 100%;
-            width: 100%;
+            height: 97%;
+            width: 97%;
             position: absolute;
-            top: -2px;
-            left: -2px;
+            top: 0px;
+            left: 0px;
             z-index: -1;
             border: 2px solid #964ad9;
         }
@@ -33,7 +46,7 @@
         }
         .image-item::before{
             content: '';
-            background: url(/static/admin/images/del-3.svg) center center no-repeat;
+            background: url("data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M512 0C230.4 0 0 230.4 0 512s230.4 512 512 512 512-230.4 512-512S793.6 0 512 0zm0 960C262.4 960 64 761.6 64 512S262.4 64 512 64s448 198.4 448 448-198.4 448-448 448z' fill='%23964ad9'/%3E%3Cpath d='M556.8 512L736 332.8c12.8-12.8 12.8-32 0-44.8-12.8-12.8-32-12.8-44.8 0L512 467.2 332.8 288c-12.8-12.8-32-12.8-44.8 0s-12.8 32 0 44.8L467.2 512 288 691.2c-12.8 12.8-12.8 32 0 44.8s32 12.8 44.8 0L512 556.8 691.2 736c12.8 12.8 32 12.8 44.8 0 12.8-12.8 12.8-32 0-44.8L556.8 512z' fill='%23964ad9'/%3E%3C/svg%3E") center center no-repeat;
             width: 20px;
             height: 20px;
             position: absolute;
@@ -42,38 +55,92 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s linear;
-            background-size: 14px;
+            background-size: 18px;
+        }
+
+        .image-item > .title  {
+            font-size: 12px;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            bottom: -80px;
+            padding: 0 5px;
+            background: #964ad9f0;
+            color: #f2f2f2;
+        }
+        .image-item > .title > p{
+            padding: 5px;
+            margin: 0 ;
+            display: inline-block;
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            text-overflow:ellipsis;
+        }
+        @keyframes myfirst
+        {
+            0%   {transform: translateY(0px);opacity: 1;}
+            25%  {transform: translateY(-20px);opacity: 1}
+            50%  {transform: translateY(-50px);opacity: 1}
+            100% {transform: translateY(-80px);opacity: 1}
+        }
+
+        @-webkit-keyframes myfirst /* Safari 与 Chrome */
+        {
+            0%   {transform: translateY(0px);opacity: 1;}
+            25%  {transform: translateY(-20px);opacity: 1}
+            50%  {transform: translateY(-50px);opacity: 1}
+            100% {transform: translateY(-80px);opacity: 1}
+        }
+
+        .image-item:hover > .title {
+            animation:myfirst .2s;
+            transform:translateY(-80px);
         }
 
     </style>
 </head>
 <body>
+
+    <button class="layui-btn layui-btn-normal"></button>
     <div class="image-select">
         <div class="list">
-            <div class="content">
-                <div class="image-item" data-img-url="/static/admin/images/act.jpg" data-img-id="1" data-img-filename="act.jpg">
-                    <img src="/static/admin/images/act.jpg">
-                </div>
-                <div class="image-item" data-img-url="/static/admin/images/act.jpg" data-img-id="1" data-img-filename="act.jpg">
-                    <img src="/static/admin/images/act.jpg" alt="">
-                </div>
-                <div class="image-item" data-img-url="/static/admin/images/act.jpg" data-img-id="1" data-img-filename="act.jpg">
-                    <img src="/static/admin/images/act.jpg" alt="">
-                </div>
+            <div class="content" id="img-list">
             </div>
 
         </div>
 
     </div>
+    <script id="img-content" type="text/html">
+        {{#  layui.each(d.data, function(index, item){ }}
+        <div class="image-item" data-img-url="{{ item.path }}" data-img-id="{{ item.id }}" data-img-filename="{{ item.filename }}">
+            <div class="image-section">
+                {{#  if(item.ext === 'jpg' || item.ext === 'jpeg' || item.ext === 'png' || item.ext === 'svg'){ }}
+                <img src="{{ item.path }}" width="99%">
+                {{#  }else{ }}
+                <img src="/static/admin/images/filetype_icon/{{ item.ext }}.png" width="50px" height="50px">
+                {{#  } }}
+
+            </div>
+            <div class="title" onclick="e.preventDefault();">
+                <p>
+                    {{ item.filename }}
+                </p>
+            </div>
+
+        </div>
+        {{#  }); }}
+        {{#  if(d.data.length === 0){ }}
+        无数据
+        {{#  } }}
+    </script>
     <script src="/static/component/layui/layui.js"></script>
     <script src="/static/component/pear/pear.js"></script>
     <script>
-        layui.use(['request','jquery'], function() {
+        layui.use(['request','jquery','request','laytpl'], function() {
             let $ = layui.jquery;
-            window.setting = function(opt) {
-                console.log(opt)
-            }
-
+            let request = layui.request;
+            let laytpl = layui.laytpl;
             window.getSelectedItem = function (){
                 let img_list = $(".image-select>.list>.content>.selected");
                 let return_list = [];
@@ -89,27 +156,40 @@
                 return return_list;
             }
 
-            $(".image-item").on('click',function(event,obj){
-                let _this = $(event.currentTarget)
-                let filename = _this.data('img-filename')
-                console.log(_this.data('image-url'))
-                layer.confirm('是否删除'+ filename +'？', {
-                    btn: ['确定','取消'] //按钮
-                }, function(){
-                    layer.msg('的确很重要', {icon: 1});
-                });
-            });
+            request.post({
+                url:"{:url('file.file/index',['limit'=>20])}",
+                success:function(res){
+                    console.log(res.data.data)
+                    let getTpl = $("#img-content").html();
+                    laytpl(getTpl).render(res.data, function(html){
+                        let view = $('#img-list').html(html)
+                        $(".image-item").on('click',function(event,obj){
+                            let _this = $(event.currentTarget)
+                            let filename = _this.data('img-filename')
+                            layer.confirm('是否删除'+ filename +'？', {
+                                btn: ['确定','取消'] //按钮
+                            }, function(index){
+                                _this.remove()
+                                layer.close(index)
+                            });
+                        });
 
-            $(".image-item>img").on('click',function(event,obj){
-                let _this = $(event.currentTarget)
-                if (_this.parent().hasClass('selected')){
-                    _this.parent().removeClass('selected');
-                }else{
-                    _this.parent().addClass('selected')
+                        $(".image-item>.image-section").on('click',function(event,obj){
+                            console.log(1)
+                            let _this = $(event.currentTarget)
+                            if (_this.parent().hasClass('selected')){
+                                _this.parent().removeClass('selected');
+                            }else{
+                                _this.parent().addClass('selected')
+                            }
+                            event.stopPropagation()
+                            return false
+                        });
+                    });
                 }
-                event.stopPropagation()
-                return false
-            });
+            })
+
+
         })
     </script>
 </body>
