@@ -249,12 +249,15 @@
                 },
                 success: function(dom, index) {
                     //通过索引获取到当前iframe弹出层
-                    var iframe = window['layui-layer-iframe' + index];
+                    // var iframe = window['layui-layer-iframe' + index];
                     //调用iframe弹出层内的方法
-                    iframe.setting({'max':1});
+                    // iframe.setting({'max':1});
                 },
                 yes:function (index, layero){
-                    console.log(layero)
+
+                    let iframe = window[layero.find('iframe')[0]['name']];//获得弹出页面
+                    let imgs = iframe.getSelectedItem()
+                    layer.msg('选择了' + imgs.length + '个文件');
                 }
             });
         }
