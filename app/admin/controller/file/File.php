@@ -22,14 +22,14 @@ class File extends BaseController
         // 获取表单上传文件
         $files = request()->file();
         try {
-            validate(['file'=>'fileSize:10240|fileExt:xlsx,csv'])
+            validate(['file'=>'fileSize:1048576'])
                 ->check($files);
             $this->service->upload($files);
-            $res = $this->service->getSaveName();
+            $res = $this->service->getSaveFile();
 //            foreach($files as $file) {
 //                $savename[] = \think\facade\Filesystem::putFile( 'topic', $file);
 //            }
-            return $this->success('上传成功',['uri'=>$res]);
+            return $this->success('上传成功',$res);
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
             return $this->error("上传失败" . $e->getMessage());

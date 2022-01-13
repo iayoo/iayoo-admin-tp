@@ -35,6 +35,14 @@ class FileService extends \app\services\BaseService
         $this->saveName = $saveName;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSaveFile()
+    {
+        return $this->saveFile;
+    }
+
     public function upload($files)
     {
         if (is_array($files)){
@@ -65,10 +73,11 @@ class FileService extends \app\services\BaseService
             'create_time' => time(),
         ];
         $insert = [];
-        foreach ($this->saveFile as $item){
-            $insert[] = array_merge($dateInfo,$item);
+        foreach ($this->saveFile as $key => $item){
+            $insert = array_merge($dateInfo,$item);
+            $id = $this->modelInstance->insertGetId($insert);
+            $this->saveFile[$key]['id'] = $id;
         }
-        $this->modelInstance->insertAll($insert);
     }
 
 
