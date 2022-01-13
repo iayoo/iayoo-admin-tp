@@ -108,7 +108,7 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <button class="layui-btn layui-btn-normal">
-                <i class="layui-icon"></i>
+                <i class="layui-icon layui-icon-upload-drag"></i>
                 上传文件</button>
         </div>
         <div class="layui-card-body">
@@ -133,7 +133,7 @@
                 {{#  } }}
 
             </div>
-            <div class="title" onclick="e.preventDefault();">
+            <div class="title">
                 <p>
                     {{ item.filename }}
                 </p>
@@ -166,6 +166,31 @@
                 }
                 return return_list;
             }
+            $("#img-list").on('click','.image-item',function(event,obj){
+                let _this = $(event.currentTarget)
+                let filename = _this.data('img-filename')
+                layer.confirm('是否删除'+ filename +'？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(index){
+                    _this.remove()
+                    layer.close(index)
+                });
+            })
+
+            $("#img-list").on('click','.title',function(event,obj){
+                event.stopPropagation()
+                return false
+            })
+            $("#img-list").on('click','.image-section',function(event,obj){
+                let _this = $(event.currentTarget)
+                if (_this.parent().hasClass('selected')){
+                    _this.parent().removeClass('selected');
+                }else{
+                    _this.parent().addClass('selected')
+                }
+                event.stopPropagation()
+                return false
+            })
 
             request.post({
                 url:"{:url('file.file/index',['limit'=>20])}",
@@ -174,33 +199,6 @@
                     let getTpl = $("#img-content").html();
                     laytpl(getTpl).render(res.data, function(html){
                         let view = $('#img-list').html(html)
-                        $(".image-item").on('click',function(event,obj){
-                            let _this = $(event.currentTarget)
-                            let filename = _this.data('img-filename')
-                            layer.confirm('是否删除'+ filename +'？', {
-                                btn: ['确定','取消'] //按钮
-                            }, function(index){
-                                _this.remove()
-                                layer.close(index)
-                            });
-                        });
-
-                        $(".image-item>.title").on('click',function(event,obj){
-                            event.stopPropagation()
-                            return false
-                        });
-
-                        $(".image-item>.image-section").on('click',function(event,obj){
-                            console.log(1)
-                            let _this = $(event.currentTarget)
-                            if (_this.parent().hasClass('selected')){
-                                _this.parent().removeClass('selected');
-                            }else{
-                                _this.parent().addClass('selected')
-                            }
-                            event.stopPropagation()
-                            return false
-                        });
                     });
                 }
             })
